@@ -1,0 +1,5 @@
+numpy >= 1.20.0
+mujoco >= 3.2.0
+taichi >= 1.6.0
+pynput
+matplotlib
