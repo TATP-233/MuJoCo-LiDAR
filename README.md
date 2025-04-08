@@ -1,10 +1,8 @@
-# MJ-LiDAR: High-Performance LiDAR Simulation for MuJoCo
+# MuJoCo-LiDAR: High-Performance LiDAR Simulation for MuJoCo
 
 A high-performance LiDAR simulation tool designed for MuJoCo, powered by Taichi programming language.
 
 ![demo](./assets/lidar_rviz.png)
-
-[toc]
 
 ## 🌟 Features
 
