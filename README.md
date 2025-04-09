@@ -4,6 +4,8 @@ A high-performance LiDAR simulation tool designed for MuJoCo, powered by Taichi 
 
 ![demo](./assets/lidar_rviz.png)
 
+[中文文档](README_zh.md)
+
 ## 🌟 Features
 
 - **GPU-Accelerated**: Uses Taichi for efficient parallel computing on GPUs

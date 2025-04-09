@@ -4,6 +4,8 @@
 
 ![demo](./assets/lidar_rviz.png)
 
+[English Document](README.md)
+
 ## 🌟 特点
 
 - **GPU加速**：利用Taichi实现GPU高效并行计算
