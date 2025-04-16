@@ -46,7 +46,7 @@ MJ-LiDAR提供了两种使用方式：直接使用核心的`MjLidarSensor`类或
 
 #### 简单示例：在MuJoCo环境中添加激光雷达
 
-下面是一个完整的示例`examples/simple_demo.py`，展示如何在MuJoCo环境中添加激光雷达并可视化点云：
+下面是一个完整的示例`mujoco_lidar/examples/simple_demo.py`，展示如何在MuJoCo环境中添加激光雷达并可视化点云：
 
 ```python
 import time
@@ -56,8 +56,8 @@ import mujoco.viewer
 import matplotlib.pyplot as plt
 
 # 导入激光雷达包装类和扫描模式生成函数
-from mj_lidar.lidar_wrapper import MjLidarWrapper
-from mj_lidar.scan_gen import generate_grid_scan_pattern
+from mujoco_lidar.lidar_wrapper import MjLidarWrapper
+from mujoco_lidar.scan_gen import generate_grid_scan_pattern
 
 # 1. 定义简单的MuJoCo场景（包含不同几何体和激光雷达站点）
 simple_demo_scene = """
@@ -165,7 +165,7 @@ plot_points_thread.join()
 运行程序，查看效果：
 
 ```bash
-python examples/simple_demo.py
+python mujoco_lidar/examples/simple_demo.py
 
 # 在mujoco.viewer中，双击选中lidar_site所在的红色方块，按住Ctrl键，右键鼠标拖动可以平移红色方块，
 # 按住Ctrl，左键鼠标拖动可以旋转红色方块，同时观察matplotlib的`Figure 1`界面中的lidar点云的位置变化
@@ -186,7 +186,7 @@ python examples/simple_demo.py
 
 2. **选择合适的激光雷达扫描模式**：
    ```python
-   from mj_lidar.scan_gen import (
+   from mujoco_lidar.scan_gen import (
        generate_HDL64,          # Velodyne HDL-64E 模式
        generate_vlp32,          # Velodyne VLP-32C 模式
        generate_os128,          # Ouster OS-128 模式
@@ -263,10 +263,10 @@ python examples/simple_demo.py
 roscore
 
 # 第二个终端
-python examples/lidar_vis_ros1.py
+python mujoco_lidar/examples/lidar_vis_ros1.py
 
 # 第三个终端 使用RViz可视化场景和点云
-rosrun rviz rviz -d examples/config/rviz_config.rviz
+rosrun rviz rviz -d mujoco_lidar/examples/config/rviz_config.rviz
 ```
 
 这将在`/lidar_points`话题上发布PointCloud2格式的激光雷达扫描数据。
@@ -276,7 +276,7 @@ rosrun rviz rviz -d examples/config/rviz_config.rviz
 `lidar_vis_ros1.py`支持以下命令行参数：
 
 ```bash
-python examples/lidar_vis_ros1.py [options]
+python mujoco_lidar/examples/lidar_vis_ros1.py [options]
 
 选项:
   --lidar MODEL      指定激光雷达型号，可选值:
@@ -291,7 +291,7 @@ python examples/lidar_vis_ros1.py [options]
 
 示例：使用HDL64激光雷达，启用性能分析，设置发布频率为10Hz
 ```bash
-python examples/lidar_vis_ros1.py --lidar HDL64 --profiling --rate 10
+python mujoco_lidar/examples/lidar_vis_ros1.py --lidar HDL64 --profiling --rate 10
 ```
 
 #### 键盘交互
@@ -307,10 +307,10 @@ python examples/lidar_vis_ros1.py --lidar HDL64 --profiling --rate 10
 
 ```bash
 # 第一个终端
-python examples/lidar_vis_ros2.py
+python mujoco_lidar/examples/lidar_vis_ros2.py
 
 # 第二个终端 使用RViz2可视化场景和点云
-ros2 run rviz2 rviz2 -d examples/config/rviz_config.rviz
+ros2 run rviz2 rviz2 -d mujoco_lidar/examples/config/rviz_config.rviz
 ```
 
 这将在`/lidar_points`话题上发布PointCloud2格式的激光雷达扫描数据。
@@ -320,7 +320,7 @@ ros2 run rviz2 rviz2 -d examples/config/rviz_config.rviz
 `lidar_vis_ros2.py`支持与ROS1示例相同的命令行参数：
 
 ```bash
-python examples/lidar_vis_ros2.py [options]
+python mujoco_lidar/examples/lidar_vis_ros2.py [options]
 
 选项:
   --lidar MODEL      指定激光雷达型号，可选值同ROS1示例
@@ -336,7 +336,7 @@ python examples/lidar_vis_ros2.py [options]
 运行性能测试以评估激光雷达仿真性能：
 
 ```bash
-python examples/test_speed.py --profiling --verbose
+python mujoco_lidar/examples/test_speed.py --profiling --verbose
 ```
 
 这将测试115,200射线（相当于1800×64分辨率）的性能，并显示详细的计时信息。

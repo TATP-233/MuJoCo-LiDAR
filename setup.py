@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="MuJoCo-LiDAR",
+    name="mujoco_lidar",
     version="0.1.0",
     author="Yufei Jia",
     author_email="jyf23@mails.tsinghua.edu.cn",

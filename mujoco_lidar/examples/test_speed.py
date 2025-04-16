@@ -5,10 +5,10 @@ import numpy as np
 import taichi as ti
 import matplotlib.pyplot as plt
 
-from mj_lidar.core import MjLidarSensor
-from mj_lidar.scan_gen import generate_grid_scan_pattern
+from mujoco_lidar.core import MjLidarSensor
+from mujoco_lidar.scan_gen import generate_grid_scan_pattern
 
-from mj_lidar_utils import create_demo_scene
+from mujoco_lidar.mj_lidar_utils import create_demo_scene
 
 if __name__ == "__main__":
     import time

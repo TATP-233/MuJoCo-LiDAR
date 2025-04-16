@@ -18,10 +18,10 @@ from sensor_msgs.msg import PointCloud2, PointField
 from visualization_msgs.msg import MarkerArray
 
 
-from mj_lidar.lidar_wrapper import MjLidarWrapper
-from mj_lidar.scan_gen import LivoxGenerator, generate_vlp32, generate_HDL64, generate_os128
+from mujoco_lidar.lidar_wrapper import MjLidarWrapper
+from mujoco_lidar.scan_gen import LivoxGenerator, generate_vlp32, generate_HDL64, generate_os128
 
-from mj_lidar_utils import create_demo_scene, KeyboardListener, create_marker_from_geom
+from mujoco_lidar.mj_lidar_utils import create_demo_scene, KeyboardListener, create_marker_from_geom
 
 class LidarVisualizer(Node):
     def __init__(self, args):

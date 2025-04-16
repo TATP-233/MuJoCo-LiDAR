@@ -46,7 +46,7 @@ MJ-LiDAR provides two ways to use the library: directly through the core `MjLida
 
 #### Simple Example: Adding LiDAR to a MuJoCo Environment
 
-Here's a complete example `examples/simple_demo.py` showing how to add a LiDAR to a MuJoCo environment and visualize the point cloud:
+Here's a complete example `mujoco_lidar/examples/simple_demo.py` showing how to add a LiDAR to a MuJoCo environment and visualize the point cloud:
 
 ```python
 import time
@@ -56,8 +56,8 @@ import mujoco.viewer
 import matplotlib.pyplot as plt
 
 # Import LiDAR wrapper and scan pattern generator
-from mj_lidar.lidar_wrapper import MjLidarWrapper
-from mj_lidar.scan_gen import generate_grid_scan_pattern
+from mujoco_lidar.lidar_wrapper import MjLidarWrapper
+from mujoco_lidar.scan_gen import generate_grid_scan_pattern
 
 # 1. Define a simple MuJoCo scene (with various geometries and LiDAR site)
 simple_demo_scene = """
@@ -165,7 +165,7 @@ plot_points_thread.join()
 Run the program to see the effects:
 
 ```bash
-python examples/simple_demo.py
+python mujoco_lidar/examples/simple_demo.py
 
 # In mujoco.viewer, double-click to select the red box where lidar_site is located. Hold Ctrl and right-click drag to move the red box,
 # Hold Ctrl and left-click drag to rotate the red box, while observing the position changes of the lidar points in the `Figure 1` window of matplotlib
@@ -186,7 +186,7 @@ If you want to use the LiDAR in your own MuJoCo environment, follow these steps:
 
 2. **Choose an appropriate LiDAR scan pattern**:
    ```python
-   from mj_lidar.scan_gen import (
+   from mujoco_lidar.scan_gen import (
        generate_HDL64,          # Velodyne HDL-64E pattern
        generate_vlp32,          # Velodyne VLP-32C pattern
        generate_os128,          # Ouster OS-128 pattern
@@ -265,10 +265,10 @@ If you want to use the LiDAR in your own MuJoCo environment, follow these steps:
 roscore
 
 # Second terminal
-python examples/lidar_vis_ros1.py
+python mujoco_lidar/examples/lidar_vis_ros1.py
 
 # Third terminal - Use RViz to visualize scene and point cloud
-rosrun rviz rviz -d examples/config/rviz_config.rviz
+rosrun rviz rviz -d mujoco_lidar/examples/config/rviz_config.rviz
 ```
 
 This publishes LiDAR scans as PointCloud2 messages on the `/lidar_points` topic.
@@ -278,7 +278,7 @@ This publishes LiDAR scans as PointCloud2 messages on the `/lidar_points` topic.
 `lidar_vis_ros1.py` supports the following command line arguments:
 
 ```bash
-python examples/lidar_vis_ros1.py [options]
+python mujoco_lidar/examples/lidar_vis_ros1.py [options]
 
 Options:
   --lidar MODEL      Specify LiDAR model, available options:
@@ -293,7 +293,7 @@ Options:
 
 Example: Using HDL64 LiDAR with profiling enabled and publishing rate of 10Hz
 ```bash
-python examples/lidar_vis_ros1.py --lidar HDL64 --profiling --rate 10
+python mujoco_lidar/examples/lidar_vis_ros1.py --lidar HDL64 --profiling --rate 10
 ```
 
 #### Keyboard Interaction
@@ -309,10 +309,10 @@ In the ROS examples, you can use the keyboard to control the LiDAR position and 
 
 ```bash
 # First terminal
-python examples/lidar_vis_ros2.py
+python mujoco_lidar/examples/lidar_vis_ros2.py
 
 # Second terminal - Use RViz2 to visualize scene and point cloud
-ros2 run rviz2 rviz2 -d examples/config/rviz_config.rviz
+ros2 run rviz2 rviz2 -d mujoco_lidar/examples/config/rviz_config.rviz
 ```
 
 This publishes LiDAR scans as PointCloud2 messages on the `/lidar_points` topic.
@@ -322,7 +322,7 @@ This publishes LiDAR scans as PointCloud2 messages on the `/lidar_points` topic.
 `lidar_vis_ros2.py` supports the same command line arguments as the ROS1 example:
 
 ```bash
-python examples/lidar_vis_ros2.py [options]
+python mujoco_lidar/examples/lidar_vis_ros2.py [options]
 
 Options:
   --lidar MODEL      Specify LiDAR model, same options as ROS1 example
@@ -338,7 +338,7 @@ Keyboard controls are the same as in ROS1.
 Run the performance test to benchmark the LiDAR simulation:
 
 ```bash
-python examples/test_speed.py --profiling --verbose
+python mujoco_lidar/examples/test_speed.py --profiling --verbose
 ```
 
 This will test 115,200 rays (equivalent to 1800×64 resolution) and show detailed timing information.

@@ -1,6 +1,6 @@
-from mj_lidar.core import MjLidarSensor
-from mj_lidar.lidar_wrapper import MjLidarWrapper
-from mj_lidar.scan_gen import \
+from mujoco_lidar.core import MjLidarSensor
+from mujoco_lidar.lidar_wrapper import MjLidarWrapper
+from mujoco_lidar.scan_gen import \
     LivoxGenerator, \
     generate_HDL64, \
     generate_vlp32, \

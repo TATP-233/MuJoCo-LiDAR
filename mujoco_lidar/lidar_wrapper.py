@@ -3,7 +3,7 @@ import mujoco
 import numpy as np
 import taichi as ti
 
-from mj_lidar.core import MjLidarSensor
+from mujoco_lidar.core import MjLidarSensor
 
 class MjLidarWrapper:
     def __init__(self, mj_model:mujoco.MjModel, mj_data:mujoco.MjData, site_name:str, args:dict={}):

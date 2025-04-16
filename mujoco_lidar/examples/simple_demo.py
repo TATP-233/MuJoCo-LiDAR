@@ -5,8 +5,8 @@ import mujoco
 import mujoco.viewer
 import matplotlib.pyplot as plt
 
-from mj_lidar.lidar_wrapper import MjLidarWrapper
-from mj_lidar.scan_gen import generate_grid_scan_pattern
+from mujoco_lidar.lidar_wrapper import MjLidarWrapper
+from mujoco_lidar.scan_gen import generate_grid_scan_pattern
 
 simple_demo_scene = """
 <mujoco model="simple_demo">
