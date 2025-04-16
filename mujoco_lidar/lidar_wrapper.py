@@ -7,7 +7,7 @@ from mujoco_lidar.core import MjLidarSensor
 
 class MjLidarWrapper:
     def __init__(self, mj_model:mujoco.MjModel, mj_data:mujoco.MjData, site_name:str, args:dict={}):
-        self.scene = mujoco.MjvScene(mj_model, maxgeom=100)
+        self.scene = mujoco.MjvScene(mj_model, maxgeom=10000)
         mujoco.mj_forward(mj_model, mj_data)
         mujoco.mjv_updateScene(
             mj_model, mj_data, mujoco.MjvOption(), 
