@@ -23,10 +23,105 @@ from mujoco_lidar.scan_gen import LivoxGenerator, generate_vlp32, generate_HDL64
 
 from mujoco_lidar.mj_lidar_utils import create_demo_scene, KeyboardListener, create_marker_from_geom
 
+
+def publish_scene(publisher, mj_scene, frame_id, stamp):
+    """将MuJoCo场景发布为ROS可视化标记数组"""
+    marker_array = MarkerArray()
+
+    # 记录当前使用的标记ID
+    current_id = 0
+
+    # 创建每个几何体的标记
+    for i in range(mj_scene.ngeom):
+        geom = mj_scene.geoms[i]
+        # 创建标记并返回一个标记列表
+        markers = create_marker_from_geom(geom, current_id, frame_id)
+
+        # 添加所有返回的标记到标记数组
+        for marker in markers:
+            # 在ROS2中，需要设置stamp为ROS2的时间类型
+            marker.header.stamp = stamp
+            marker_array.markers.append(marker)
+            current_id += 1
+
+    # 发布标记数组
+    publisher.publish(marker_array)
+
+
+def publish_point_cloud(self, publisher, points, frame_id, stamp):
+    """将点云数据发布为ROS PointCloud2消息"""
+
+    # 定义点云字段
+    fields = [
+        PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+        PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+        PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+        PointField(name='intensity', offset=12, datatype=PointField.FLOAT32, count=1)
+    ]
+
+    # 添加强度值
+    if len(points.shape) == 2:
+        # 如果是(N, 3)形状，转换为(3, N)以便处理
+        points_transposed = points.T if points.shape[1] == 3 else points
+
+        if points_transposed.shape[0] == 3:
+            # 添加强度通道
+            points_with_intensity = np.vstack([
+                points_transposed, 
+                np.ones(points_transposed.shape[1], dtype=np.float32)
+            ])
+        else:
+            points_with_intensity = points_transposed
+    else:
+        # 如果点云已经是(3, N)形状
+        if points.shape[0] == 3:
+            points_with_intensity = np.vstack([
+                points, 
+                np.ones(points.shape[1], dtype=np.float32)
+            ])
+        else:
+            points_with_intensity = points
+
+    # 创建ROS2 PointCloud2消息
+    pc_msg = PointCloud2()
+    pc_msg.header.frame_id = frame_id
+    pc_msg.header.stamp = stamp
+    pc_msg.fields = fields
+    pc_msg.is_bigendian = False
+    pc_msg.point_step = 16  # 4 个 float32 (x,y,z,intensity)
+    pc_msg.row_step = pc_msg.point_step * points_with_intensity.shape[1]
+    pc_msg.height = 1
+    pc_msg.width = points_with_intensity.shape[1]
+    pc_msg.is_dense = True
+
+    # 转置回(N, 4)格式并转换为字节数组
+    pc_msg.data = np.transpose(points_with_intensity).astype(np.float32).tobytes()
+
+    publisher.publish(pc_msg)
+
+
+def broadcast_tf(broadcaster, parent_frame, child_frame, translation, rotation, stamp):
+    """广播TF变换"""
+    t = TransformStamped()
+    t.header.stamp = stamp
+    t.header.frame_id = parent_frame
+    t.child_frame_id = child_frame
+
+    t.transform.translation.x = float(translation[0])
+    t.transform.translation.y = float(translation[1])
+    t.transform.translation.z = float(translation[2])
+
+    t.transform.rotation.x = float(rotation[0])
+    t.transform.rotation.y = float(rotation[1])
+    t.transform.rotation.z = float(rotation[2])
+    t.transform.rotation.w = float(rotation[3])
+
+    broadcaster.sendTransform(t)
+
 class LidarVisualizer(Node):
     def __init__(self, args):
         super().__init__('mujoco_lidar_test')
-        
+
         # 创建点云发布者
         self.pub_taichi = self.create_publisher(PointCloud2, '/lidar_points_taichi', 1)
 
@@ -35,7 +130,7 @@ class LidarVisualizer(Node):
 
         # 创建TF广播者
         self.tf_broadcaster = TransformBroadcaster(self)
-        
+
         # 创建MuJoCo场景
         self.mj_model, self.mj_data = create_demo_scene()
 
@@ -68,103 +163,6 @@ class LidarVisualizer(Node):
 
         # 创建键盘监听器
         self.kb_listener = KeyboardListener(lidar_base_position, lidar_base_orientation)
-        
-    def publish_scene(self, publisher, mj_scene, frame_id="world"):
-        """将MuJoCo场景发布为ROS可视化标记数组"""
-        marker_array = MarkerArray()
-        
-        # 记录当前使用的标记ID
-        current_id = 0
-        
-        # 创建每个几何体的标记
-        for i in range(mj_scene.ngeom):
-            geom = mj_scene.geoms[i]
-            # 创建标记并返回一个标记列表
-            markers = create_marker_from_geom(geom, current_id, frame_id)
-            
-            # 添加所有返回的标记到标记数组
-            for marker in markers:
-                # 在ROS2中，需要设置stamp为ROS2的时间类型
-                marker.header.stamp = self.get_clock().now().to_msg()
-                marker_array.markers.append(marker)
-                current_id += 1
-        
-        # 发布标记数组
-        publisher.publish(marker_array)
-
-    def publish_point_cloud(self, publisher, points, frame_id):
-        """将点云数据发布为ROS PointCloud2消息"""
-        stamp = self.get_clock().now().to_msg()
-            
-        # 定义点云字段
-        fields = [
-            PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
-            PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
-            PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
-            PointField(name='intensity', offset=12, datatype=PointField.FLOAT32, count=1)
-        ]
-        
-        # 添加强度值
-        if len(points.shape) == 2:
-            # 如果是(N, 3)形状，转换为(3, N)以便处理
-            points_transposed = points.T if points.shape[1] == 3 else points
-            
-            if points_transposed.shape[0] == 3:
-                # 添加强度通道
-                points_with_intensity = np.vstack([
-                    points_transposed, 
-                    np.ones(points_transposed.shape[1], dtype=np.float32)
-                ])
-            else:
-                points_with_intensity = points_transposed
-        else:
-            # 如果点云已经是(3, N)形状
-            if points.shape[0] == 3:
-                points_with_intensity = np.vstack([
-                    points, 
-                    np.ones(points.shape[1], dtype=np.float32)
-                ])
-            else:
-                points_with_intensity = points
-        
-        # 创建ROS2 PointCloud2消息
-        pc_msg = PointCloud2()
-        pc_msg.header.frame_id = frame_id
-        pc_msg.header.stamp = stamp
-        pc_msg.fields = fields
-        pc_msg.is_bigendian = False
-        pc_msg.point_step = 16  # 4 个 float32 (x,y,z,intensity)
-        pc_msg.row_step = pc_msg.point_step * points_with_intensity.shape[1]
-        pc_msg.height = 1
-        pc_msg.width = points_with_intensity.shape[1]
-        pc_msg.is_dense = True
-        
-        # 转置回(N, 4)格式并转换为字节数组
-        pc_msg.data = np.transpose(points_with_intensity).astype(np.float32).tobytes()
-        
-        publisher.publish(pc_msg)
-
-    def broadcast_tf(self, broadcaster, parent_frame, child_frame, translation, rotation, stamp=None):
-        """广播TF变换"""
-        if stamp is None:
-            stamp = self.get_clock().now().to_msg()
-            
-        t = TransformStamped()
-        t.header.stamp = stamp
-        t.header.frame_id = parent_frame
-        t.child_frame_id = child_frame
-        
-        t.transform.translation.x = float(translation[0])
-        t.transform.translation.y = float(translation[1])
-        t.transform.translation.z = float(translation[2])
-        
-        t.transform.rotation.x = float(rotation[0])
-        t.transform.rotation.y = float(rotation[1])
-        t.transform.rotation.z = float(rotation[2])
-        t.transform.rotation.w = float(rotation[3])
-        
-        broadcaster.sendTransform(t)
-
 
 def main():
     # 解析命令行参数
@@ -175,7 +173,7 @@ def main():
     parser.add_argument('--verbose', action='store_true', help='显示详细输出信息')
     parser.add_argument('--rate', type=int, default=12, help='循环频率 (Hz) (默认: 12)')
     args = parser.parse_args()
-    
+
     print("\n" + "=" * 60)
     print("MuJoCo LiDAR可视化与ROS2集成")
     print("=" * 60)
@@ -192,7 +190,7 @@ def main():
 
     # 初始化ROS2
     rclpy.init()
-    
+
     # 创建节点并运行
     node = LidarVisualizer(args)
 
@@ -225,8 +223,8 @@ def main():
 
                 if step_cnt % step_gap == 0:
                     # 发布场景可视化标记
-                    node.publish_scene(node.pub_scene, node.lidar.scene)
-                
+                    publish_scene(node.pub_scene, node.lidar.scene, "world", node.get_clock().now().to_msg())
+
                     # 执行光线追踪
                     start_time = time.time()
 
@@ -248,15 +246,16 @@ def main():
                         node.get_logger().info(f"位置: [{lidar_position[0]:.2f}, {lidar_position[1]:.2f}, {lidar_position[2]:.2f}], "
                             f"欧拉角: [{euler_deg[0]:.1f}°, {euler_deg[1]:.1f}°, {euler_deg[2]:.1f}°], "
                             f"耗时: {(end_time - start_time)*1000:.2f} ms")
-                        
+
                         if args.profiling:
                             node.get_logger().info(f"  准备时间: {node.lidar.lidar_sensor.prepare_time:.2f}ms, 内核时间: {node.lidar.lidar_sensor.kernel_time:.2f}ms")
-                    
+
                     # 广播激光雷达的TF
-                    node.broadcast_tf(node.tf_broadcaster, "world", "lidar", lidar_position,  lidar_orientation)
+                    broadcast_tf(node.tf_broadcaster, "world", "lidar", lidar_position, lidar_orientation, node.get_clock().now().to_msg())
 
                     # 发布点云
-                    node.publish_point_cloud(node.pub_taichi, points, "lidar")
+                    publish_point_cloud(node.pub_taichi, points, "lidar", node.get_clock().now().to_msg()
+)
 
     except KeyboardInterrupt:
         print("用户中断，正在退出...")
@@ -271,4 +270,4 @@ def main():
         print("程序结束")
 
 if __name__ == "__main__":
-    main() 
+    main()
