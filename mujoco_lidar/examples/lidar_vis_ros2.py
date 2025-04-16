@@ -48,7 +48,7 @@ def publish_scene(publisher, mj_scene, frame_id, stamp):
     publisher.publish(marker_array)
 
 
-def publish_point_cloud(self, publisher, points, frame_id, stamp):
+def publish_point_cloud(publisher, points, frame_id, stamp):
     """将点云数据发布为ROS PointCloud2消息"""
 
     # 定义点云字段
