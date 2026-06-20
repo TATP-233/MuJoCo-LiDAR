@@ -129,6 +129,13 @@ if __name__ == "__main__":
     parser.add_argument("--profiling", action="store_true", help="启用性能分析")
     parser.add_argument("--verbose", action="store_true", help="显示详细输出信息")
     parser.add_argument("--rate", type=int, default=12, help="循环频率 (Hz) (默认: 12)")
+    parser.add_argument(
+        "--backend",
+        type=str,
+        default="taichi",
+        help="LiDAR后端 (cpu, taichi, jax, warp)",
+        choices=["cpu", "taichi", "jax", "warp"],
+    )
     args = parser.parse_args()
 
     print("\n" + "=" * 60)
@@ -136,6 +143,7 @@ if __name__ == "__main__":
     print("=" * 60)
     print("配置：")
     print(f"- LiDAR型号: {args.lidar}")
+    print(f"- LiDAR后端: {args.backend}")
     print(f"- 循环频率: {args.rate} Hz")
     print(f"- 性能分析: {'启用' if args.profiling else '禁用'}")
     print(f"- 详细输出: {'启用' if args.verbose else '禁用'}")
@@ -189,7 +197,7 @@ if __name__ == "__main__":
     scene = mujoco.MjvScene(mj_model, maxgeom=10000)
 
     # 创建激光雷达传感器
-    lidar = MjLidarWrapper(mj_model, site_name="lidar_site", backend="cpu")
+    lidar = MjLidarWrapper(mj_model, site_name="lidar_site", backend=args.backend)
 
     # 设置激光雷达位置
     lidar_position = np.array([0.0, 0.0, 1.0], dtype=np.float32)
@@ -295,7 +303,7 @@ if __name__ == "__main__":
             os.killpg(os.getpgid(rviz_process.pid), signal.SIGTERM)
             rviz_process.wait(timeout=5)
             print("rviz 进程已关闭")
-        except:
+        except Exception:
             print("强制关闭 rviz 进程...")
             os.killpg(os.getpgid(rviz_process.pid), signal.SIGKILL)
             print("rviz 进程已强制关闭")

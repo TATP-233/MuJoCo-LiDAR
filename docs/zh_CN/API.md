@@ -2,7 +2,7 @@
 
 ## MjLidarWrapper
 
-LiDAR 仿真的主接口，统一封装 CPU、Taichi 和 JAX 三个后端。
+LiDAR 仿真的主接口，统一封装 CPU、Taichi、JAX 和 Warp 后端。
 
 ### 构造函数
 
@@ -19,7 +19,7 @@ MjLidarWrapper(
 **参数：**
 - `mj_model`：MuJoCo 模型对象
 - `site_name`：模型中 LiDAR site 的名称
-- `backend`：计算后端，`"cpu"`、`"taichi"` 或 `"jax"`（默认：`"taichi"`）
+- `backend`：计算后端，`"cpu"`、`"taichi"`、`"jax"` 或 `"warp"`（默认：`"taichi"`）
 - `cutoff_dist`：最大射线距离，单位米（默认：100.0）
 - `args`：后端专用参数（见下文）
 
@@ -90,7 +90,20 @@ args = {
 
 ```python
 args = {
-    'geom_ids': list | None         # 包含的几何体 ID 列表（None 表示全部）
+    'geom_ids': list | None,         # 包含的几何体 ID 列表（None 表示全部）
+    'geomgroup': np.ndarray | None,  # 几何组过滤器（0-5），None 表示全部
+    'bodyexclude': int               # 排除的 body ID（-1 表示不排除）
+}
+```
+
+#### Warp 后端
+
+```python
+args = {
+    'geomgroup': np.ndarray | None,  # 几何组过滤器（0-5），None 表示全部
+    'bodyexclude': int,              # 排除的 body ID（-1 表示不排除）
+    'device': str | None,            # Warp 设备，例如 "cuda:0"
+    'use_bvh': bool                  # 是否使用 Warp BVH broad phase（默认：True）
 }
 ```
 

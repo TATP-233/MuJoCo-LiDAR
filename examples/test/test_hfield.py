@@ -35,7 +35,7 @@ print(f"Number of rays: {len(theta)}")
 np.random.seed(0)
 rnd_args = np.random.randint(0, len(theta), size=30)
 
-backends = ["cpu", "taichi", "jax"]
+backends = ["cpu", "taichi", "jax", "warp"]
 results = {}
 
 for backend in backends:
@@ -91,10 +91,9 @@ for backend in backends:
                 z_min, z_max = z_vals.min(), z_vals.max()
                 z_range = z_max - z_min
 
-                if z_range < 1e-6:
-                    z_norm = np.zeros_like(z_vals)
-                else:
-                    z_norm = (z_vals - z_min) / z_range
+                z_norm = (
+                    np.zeros_like(z_vals) if z_range < 1e-6 else (z_vals - z_min) / z_range
+                )
 
                 # Map to RGB using matplotlib
                 if backend == "cpu":

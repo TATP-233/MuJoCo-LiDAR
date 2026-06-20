@@ -4,7 +4,7 @@ import pytest
 from mujoco_lidar import MjLidarWrapper
 
 
-@pytest.mark.parametrize("backend", ["cpu", "taichi", "jax"])
+@pytest.mark.parametrize("backend", ["cpu", "taichi", "jax", "warp"])
 def test_backend_consistency(simple_model, simple_rays, backend):
     """测试不同后端结果一致性"""
     try:

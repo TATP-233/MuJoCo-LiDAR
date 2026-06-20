@@ -29,6 +29,7 @@ class OnnxController:
         n_substeps: int,
         action_scale: float = 0.5,
         lidar_type: str = "mid360",
+        backend: str = "jax",
     ):
 
         self._output_names = ["continuous_actions"]
@@ -65,7 +66,7 @@ class OnnxController:
         self.lidar = MjLidarWrapper(
             mj_model,
             site_name="lidar",
-            backend="jax",
+            backend=backend,
             args={"bodyexclude": mj_model.body("torso_link").id, "geomgroup": geomgroup},
         )
 
@@ -107,6 +108,13 @@ class OnnxController:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="MuJoCo LiDAR可视化与Unitree G1 ROS2集成")
     parser.add_argument(
+        "--backend",
+        type=str,
+        default="jax",
+        help="LiDAR后端 (cpu, taichi, jax, warp)",
+        choices=["cpu", "taichi", "jax", "warp"],
+    )
+    parser.add_argument(
         "--lidar",
         type=str,
         default="mid360",
@@ -132,6 +140,7 @@ if __name__ == "__main__":
         n_substeps=int(round(ctrl_dt / mj_model.opt.timestep)),
         action_scale=0.5,
         lidar_type=args.lidar,
+        backend=args.backend,
     )
 
     with mujoco.viewer.launch_passive(mj_model, mj_data) as viewer:

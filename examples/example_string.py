@@ -1,3 +1,5 @@
+import argparse
+import contextlib
 import queue
 import threading
 import time
@@ -94,10 +96,8 @@ def mujoco_simulation_thread(mj_model, mj_data, lidar_sensor, rays_phi, rays_the
                                 point_queue.get_nowait()
                             except queue.Empty:
                                 break
-                        try:
+                        with contextlib.suppress(queue.Full):
                             point_queue.put_nowait(points.copy())
-                        except queue.Full:
-                            pass
 
                     lidar_sim_cnt += 1
         except KeyboardInterrupt:
@@ -110,6 +110,15 @@ def mujoco_simulation_thread(mj_model, mj_data, lidar_sensor, rays_phi, rays_the
 # 主程序（matplotlib在主线程中运行）
 def main():
     global running
+    parser = argparse.ArgumentParser(description="MuJoCo LiDAR string MJCF example")
+    parser.add_argument(
+        "--backend",
+        type=str,
+        default="cpu",
+        help="LiDAR后端 (cpu, taichi, jax, warp)",
+        choices=["cpu", "taichi", "jax", "warp"],
+    )
+    args = parser.parse_args()
 
     # print help
     print("在Mujoco Viewer视图，双击选中MoCap物体（带坐标系的红色透明方块 lidar_site）")
@@ -130,7 +139,7 @@ def main():
 
     # 创建激光雷达传感器
     lidar_sensor = MjLidarWrapper(
-        mj_model, site_name="lidar_site", backend="cpu", args={"bodyexclude": exclode_body_id}
+        mj_model, site_name="lidar_site", backend=args.backend, args={"bodyexclude": exclode_body_id}
     )
     lidar_sensor.trace_rays(mj_data, rays_theta, rays_phi)
     points = lidar_sensor.get_hit_points()

@@ -19,7 +19,7 @@ MjLidarWrapper(
 **Parameters:**
 - `mj_model`: MuJoCo model object
 - `site_name`: Name of LiDAR site in the model
-- `backend`: `"cpu"`, `"taichi"`, or `"jax"` (default: `"taichi"`)
+- `backend`: `"cpu"`, `"taichi"`, `"jax"`, or `"warp"` (default: `"taichi"`)
 - `cutoff_dist`: Maximum ray distance in meters (default: 100.0)
 - `args`: Backend-specific arguments (see below)
 
@@ -75,6 +75,17 @@ args = {
 ```python
 args = {
     'geom_ids': list | None         # Geometry IDs to include (None = all)
+}
+```
+
+#### Warp Backend
+
+```python
+args = {
+    'geomgroup': np.ndarray | None,  # Geometry group filter (0-5)
+    'bodyexclude': int,              # Body ID to exclude (-1 = none)
+    'device': str | None,            # Warp device, e.g. "cuda:0"
+    'use_bvh': bool                  # Use Warp BVH broad phase (default: True)
 }
 ```
 

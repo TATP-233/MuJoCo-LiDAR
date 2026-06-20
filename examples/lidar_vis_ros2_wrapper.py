@@ -10,7 +10,6 @@ import mujoco
 import mujoco.viewer
 import numpy as np
 import rclpy
-import taichi as ti
 from lidar_vis_ros2 import broadcast_tf, publish_point_cloud, publish_scene
 from rclpy.node import Node
 from scipy.spatial.transform import Rotation
@@ -63,15 +62,9 @@ class LidarVisualizer(Node):
         self.rays_theta = np.ascontiguousarray(self.rays_theta).astype(np.float32)
         self.rays_phi = np.ascontiguousarray(self.rays_phi).astype(np.float32)
 
-        self.lidar = MjLidarWrapper(self.mj_model, site_name=self.site_name, backend="taichi")
+        self.lidar = MjLidarWrapper(self.mj_model, site_name=self.site_name, backend=args.backend)
 
         n_rays = len(self.rays_theta)
-        _rays_phi = ti.ndarray(dtype=ti.f32, shape=n_rays)
-        _rays_theta = ti.ndarray(dtype=ti.f32, shape=n_rays)
-        _rays_phi.from_numpy(self.rays_phi)
-        _rays_theta.from_numpy(self.rays_theta)
-        self.rays_phi = _rays_phi
-        self.rays_theta = _rays_theta
 
         self.get_logger().info(f"射线数量: {n_rays}")
 
@@ -118,6 +111,13 @@ def main():
     )
     parser.add_argument("--verbose", action="store_true", help="显示详细输出信息")
     parser.add_argument("--rate", type=int, default=12, help="循环频率 (Hz) (默认: 12)")
+    parser.add_argument(
+        "--backend",
+        type=str,
+        default="taichi",
+        help="LiDAR后端 (cpu, taichi, jax, warp)",
+        choices=["cpu", "taichi", "jax", "warp"],
+    )
     args = parser.parse_args()
 
     print("\n" + "=" * 60)
@@ -125,6 +125,7 @@ def main():
     print("=" * 60)
     print("配置：")
     print(f"- LiDAR型号: {args.lidar}")
+    print(f"- LiDAR后端: {args.backend}")
     print(f"- 循环频率: {args.rate} Hz")
     print(f"- 详细输出: {'启用' if args.verbose else '禁用'}")
 
@@ -239,7 +240,7 @@ def main():
             os.killpg(os.getpgid(rviz_process.pid), signal.SIGTERM)
             rviz_process.wait(timeout=5)
             print("rviz2 进程已关闭")
-        except:
+        except Exception:
             print("强制关闭 rviz2 进程...")
             os.killpg(os.getpgid(rviz_process.pid), signal.SIGKILL)
             print("rviz2 进程已强制关闭")

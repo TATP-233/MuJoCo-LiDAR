@@ -3,7 +3,7 @@
 [![PyPI](https://img.shields.io/pypi/v/mujoco-lidar)](https://pypi.org/project/mujoco-lidar/)
 [![Python](https://img.shields.io/pypi/pyversions/mujoco-lidar)](https://pypi.org/project/mujoco-lidar/)
 
-High-performance LiDAR simulation for MuJoCo with CPU, Taichi, and JAX backends.
+High-performance LiDAR simulation for MuJoCo with CPU, Taichi, JAX, and Warp backends.
 
 <p align="center">
   <img src="./assets/go2.png" width="49%" />
@@ -23,6 +23,7 @@ High-performance LiDAR simulation for MuJoCo with CPU, Taichi, and JAX backends.
   - **CPU**: MuJoCo native `mj_multiRay`, no GPU required
   - **Taichi**: GPU parallel computing, supports Mesh and Hfield
   - **JAX**: GPU + MJX integration, batch simulation support
+  - **Warp**: NVIDIA Warp ray casting, supports dynamic mesh scenes and batched scenes
 - **High Performance**: 1M+ rays/sec on GPU, real-time BVH construction
 - **Multiple LiDAR Models**: Velodyne (HDL-64E, VLP-32C), Livox (mid360, avia), Ouster (OS-128), custom patterns
 - **ROS Integration**: Ready-to-use ROS1/ROS2 examples
@@ -42,6 +43,9 @@ uv add "mujoco-lidar[taichi]"
 
 # With JAX backend (GPU + batch)
 uv add "mujoco-lidar[jax]"
+
+# With Warp backend (GPU + dynamic mesh + batch)
+uv add "mujoco-lidar[warp]"
 ```
 
 **From Source:**
@@ -50,9 +54,25 @@ uv add "mujoco-lidar[jax]"
 git clone https://github.com/TATP-233/MuJoCo-LiDAR.git
 cd MuJoCo-LiDAR
 
-uv sync --extra dev                        # CPU only
-uv sync --extra dev --extra taichi         # with Taichi backend
-uv sync --extra dev --extra taichi --extra jax  # all backends
+uv sync --extra dev --extra examples
+
+# Optional GPU backends
+uv sync --extra dev --extra examples --extra taichi
+uv sync --extra dev --extra examples --extra warp
+uv sync --extra dev --extra examples --extra taichi --extra jax --extra warp
+```
+
+Run a non-ROS example after installing from source:
+
+```bash
+# Native MuJoCo viewer, CPU backend
+uv run --extra dev --extra examples python examples/example_native.py --backend cpu
+
+# Same example with the Warp backend, if installed
+uv run --extra dev --extra examples --extra warp python examples/example_native.py --backend warp
+
+# Unitree Go2, no ROS required
+uv run --extra dev --extra examples --extra warp python examples/unitree_go2.py --backend warp --stand
 ```
 
 See [Installation Guide](docs/en/INSTALLATION.md) for details.
@@ -71,7 +91,7 @@ data = mujoco.MjData(model)
 lidar = MjLidarWrapper(
     model,
     site_name="lidar_site",
-    backend="cpu",  # or "taichi", "jax"
+    backend="cpu",  # or "taichi", "jax", "warp"
     cutoff_dist=50.0
 )
 
@@ -91,6 +111,7 @@ See [Usage Guide](docs/en/USAGE.md) for more examples.
 | CPU     | ~9M      | Native   | No            |
 | Taichi  | ~62M     | GPU      | Yes           |
 | JAX     | ~231M    | GPU      | Yes           |
+| Warp    | ~100M    | GPU      | Yes           |
 
 Run benchmarks: `make benchmark`
 
@@ -104,10 +125,11 @@ Run benchmarks: `make benchmark`
 
 ## Examples
 
-- [examples/example_native.py](examples/example_native.py) - CPU backend
-- [examples/example_taichi.py](examples/example_taichi.py) - Taichi backend
-- [examples/lidar_vis_ros2.py](examples/lidar_vis_ros2.py) - ROS2 integration
-- [examples/unitree_go2_ros2.py](examples/unitree_go2_ros2.py) - Unitree Go2 robot
+- [examples/example_native.py](examples/example_native.py) - MuJoCo viewer; supports `--backend cpu|taichi|jax|warp`
+- [examples/example_mjcf.py](examples/example_mjcf.py) - MJCF scene with Matplotlib point-cloud view
+- [examples/example_string.py](examples/example_string.py) - Self-contained XML string scene
+- [examples/unitree_go2.py](examples/unitree_go2.py) - Unitree Go2 without ROS; supports `--backend`
+- [examples/unitree_g1.py](examples/unitree_g1.py) - Unitree G1 without ROS; supports `--backend`
 
 ## Development
 
