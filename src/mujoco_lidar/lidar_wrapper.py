@@ -6,12 +6,12 @@ import numpy as np
 
 class MjLidarWrapper:
     """
-    MuJoCo LiDAR wrapper supporting CPU, Taichi, and JAX backends.
+    MuJoCo LiDAR wrapper supporting CPU, Taichi, JAX, and Warp backends.
 
     Args:
         mj_model: MuJoCo model object
         site_name: Name of the LiDAR site in the model
-        backend: 'cpu', 'taichi', or 'jax' (default: 'taichi')
+        backend: 'cpu', 'taichi', 'jax', or 'warp' (default: 'taichi')
         cutoff_dist: Maximum ray distance in meters (default: 100.0)
         args: Backend-specific arguments (see docs/en/API.md)
     """
@@ -35,13 +35,15 @@ class MjLidarWrapper:
 
         if backend == "taichi":
             self._init_taichi_backend()
+        elif backend == "warp":
+            self._init_warp_backend()
         elif backend == "jax":
             self._init_jax_backend()
         elif backend == "cpu":
             self._init_cpu_backend()
         else:
             raise ValueError(
-                f"Unsupported backend: {backend}, choose from 'cpu', 'taichi', or 'jax'"
+                f"Unsupported backend: {backend}, choose from 'cpu', 'taichi', 'jax', or 'warp'"
             )
 
         self.site_name = site_name
@@ -77,6 +79,31 @@ class MjLidarWrapper:
             raise ImportError(
                 f"Failed to import Taichi backend dependencies. "
                 f'Please install taichi: uv add "mujoco-lidar[taichi]"\n'
+                f"Error: {e}"
+            ) from e
+
+    def _init_warp_backend(self) -> None:
+        """Initialize Warp backend"""
+        try:
+            from mujoco_lidar.core_warp.mjlidar_warp import MjLidarWarp
+
+            geomgroup = self.args.get("geomgroup", None)
+            bodyexclude = self.args.get("bodyexclude", -1)
+            device = self.args.get("device", None)
+            use_bvh = self.args.get("use_bvh", True)
+            self._backend_instance = MjLidarWarp(
+                self.mj_model,
+                cutoff_dist=self.cutoff_dist,
+                geomgroup=geomgroup,
+                bodyexclude=bodyexclude,
+                device=device,
+                use_bvh=use_bvh,
+            )
+
+        except ImportError as e:
+            raise ImportError(
+                f"Failed to import Warp backend dependencies. "
+                f'Please install warp: uv add "mujoco-lidar[warp]"\n'
                 f"Error: {e}"
             ) from e
 
@@ -125,8 +152,8 @@ class MjLidarWrapper:
         return self._sensor_pose[:3, :3].copy()
 
     def update_sensor_pose(self, mj_data: mujoco.MjData, site_name: str) -> None:
-        # For CPU/Taichi/JAX backend, mj_data is mujoco.MjData
-        if self.backend in ["cpu", "taichi", "jax"]:
+        # For CPU/Taichi/JAX/Warp backend, mj_data is mujoco.MjData
+        if self.backend in ["cpu", "taichi", "jax", "warp"]:
             self._sensor_pose[:3, :3] = mj_data.site(site_name).xmat.reshape(3, 3)
             self._sensor_pose[:3, 3] = mj_data.site(site_name).xpos
 
@@ -183,12 +210,49 @@ class MjLidarWrapper:
             self._backend_instance.trace_rays(self._sensor_pose, theta_ti, phi_ti)
             return self._backend_instance.get_distances()
 
+        elif self.backend == "warp":
+            self.update_sensor_pose(mj_data, target_site)
+            self._backend_instance.update(mj_data)
+            self._backend_instance.trace_rays(self._sensor_pose, ray_theta, ray_phi)
+            return self._backend_instance.get_distances()
+
         else:
             # CPU Backend
             self.update_sensor_pose(mj_data, target_site)
             self._backend_instance.update(mj_data)
             self._backend_instance.trace_rays(self._sensor_pose, ray_theta, ray_phi)
             return self._backend_instance.get_distances()
+
+    def trace_rays_batch(
+        self,
+        geom_xpos: np.ndarray,
+        geom_xmat: np.ndarray,
+        sensor_pos: np.ndarray,
+        sensor_rot: np.ndarray,
+        ray_theta: np.ndarray,
+        ray_phi: np.ndarray,
+    ) -> tuple[np.ndarray, np.ndarray]:
+        if self.backend in ["jax", "warp"]:
+            distances, local_rays = self._backend_instance.trace_rays_batch(
+                geom_xpos,
+                geom_xmat,
+                sensor_pos,
+                sensor_rot,
+                ray_theta,
+                ray_phi,
+            )
+            return np.asarray(distances), np.asarray(local_rays)
+
+        if self.backend == "taichi":
+            distances, hit_points = self._backend_instance.trace_rays_batch(
+                sensor_pos,
+                sensor_rot,
+                ray_theta,
+                ray_phi,
+            )
+            return distances.to_numpy(), hit_points.to_numpy()
+
+        raise NotImplementedError(f"Batch ray tracing is not supported by {self.backend} backend")
 
     def get_hit_points(self) -> np.ndarray:
         if self.backend == "jax":

@@ -1,3 +1,4 @@
+import argparse
 import time
 
 import matplotlib.pyplot as plt
@@ -9,6 +10,16 @@ from etils import epath
 from mujoco_lidar import MjLidarWrapper, scan_gen
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="MuJoCo LiDAR native viewer example")
+    parser.add_argument(
+        "--backend",
+        type=str,
+        default="taichi",
+        help="LiDAR后端 (cpu, taichi, jax, warp)",
+        choices=["cpu", "taichi", "jax", "warp"],
+    )
+    args = parser.parse_args()
+
     mjcf_file = epath.Path(__file__).parent.parent / "models" / "demo.xml"
     mj_model = mujoco.MjModel.from_xml_path(mjcf_file.as_posix())
     mj_data = mujoco.MjData(mj_model)
@@ -18,7 +29,10 @@ if __name__ == "__main__":
     print(f"n_substeps = {n_substeps}")
 
     lidar = MjLidarWrapper(
-        mj_model, "lidar_site", args={"bodyexclude": mj_model.body("your_robot_name").id}
+        mj_model,
+        "lidar_site",
+        backend=args.backend,
+        args={"bodyexclude": mj_model.body("your_robot_name").id},
     )
     livox_generator = scan_gen.LivoxGenerator("mid360")
     rays_theta, rays_phi = livox_generator.sample_ray_angles()

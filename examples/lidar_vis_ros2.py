@@ -10,7 +10,6 @@ import mujoco
 import mujoco.viewer
 import numpy as np
 import rclpy
-import taichi as ti
 from geometry_msgs.msg import TransformStamped
 from rclpy.node import Node
 from scipy.spatial.transform import Rotation
@@ -18,8 +17,7 @@ from sensor_msgs.msg import PointCloud2, PointField
 from tf2_ros import TransformBroadcaster
 from visualization_msgs.msg import MarkerArray
 
-from mujoco_lidar import scan_gen, scan_gen_livox_ti
-from mujoco_lidar.core_ti.mjlidar_ti import MjLidarTi
+from mujoco_lidar import MjLidarWrapper, scan_gen
 from mujoco_lidar.mj_lidar_utils import KeyboardListener, create_demo_scene, create_marker_from_geom
 
 
@@ -135,7 +133,7 @@ class LidarVisualizer(Node):
 
         self.use_livox_lidar = False
         if args.lidar in {"avia", "mid40", "mid70", "mid360", "tele"}:
-            self.livox_generator = scan_gen_livox_ti.LivoxGeneratorTi(args.lidar)
+            self.livox_generator = scan_gen.LivoxGenerator(args.lidar)
             self.rays_theta, self.rays_phi = self.livox_generator.sample_ray_angles()
             self.use_livox_lidar = True
         elif args.lidar == "HDL64":
@@ -155,15 +153,9 @@ class LidarVisualizer(Node):
         self.rays_theta = np.ascontiguousarray(self.rays_theta).astype(np.float32)
         self.rays_phi = np.ascontiguousarray(self.rays_phi).astype(np.float32)
 
-        self.lidar = MjLidarTi(self.mj_model)
+        self.lidar = MjLidarWrapper(self.mj_model, site_name=self.site_name, backend=args.backend)
 
         n_rays = len(self.rays_theta)
-        _rays_phi = ti.ndarray(dtype=ti.f32, shape=n_rays)
-        _rays_theta = ti.ndarray(dtype=ti.f32, shape=n_rays)
-        _rays_phi.from_numpy(self.rays_phi)
-        _rays_theta.from_numpy(self.rays_theta)
-        self.rays_phi = _rays_phi
-        self.rays_theta = _rays_theta
 
         self.get_logger().info(f"射线数量: {n_rays}")
 
@@ -211,6 +203,13 @@ def main():
     parser.add_argument("--verbose", action="store_true", help="显示详细输出信息")
     parser.add_argument("--rate", type=int, default=12, help="循环频率 (Hz) (默认: 12)")
     parser.add_argument("--flip", action="store_true", help="翻转LiDAR的俯仰角")
+    parser.add_argument(
+        "--backend",
+        type=str,
+        default="taichi",
+        help="LiDAR后端 (cpu, taichi, jax, warp)",
+        choices=["cpu", "taichi", "jax", "warp"],
+    )
     args = parser.parse_args()
 
     print("\n" + "=" * 60)
@@ -218,6 +217,7 @@ def main():
     print("=" * 60)
     print("配置：")
     print(f"- LiDAR型号: {args.lidar}")
+    print(f"- LiDAR后端: {args.backend}")
     print(f"- 循环频率: {args.rate} Hz")
     print(f"- 详细输出: {'启用' if args.verbose else '禁用'}")
 
@@ -275,7 +275,7 @@ def main():
                     )
 
                     if node.use_livox_lidar:
-                        node.rays_theta, node.rays_phi = node.livox_generator.sample_ray_angles_ti()
+                        node.rays_theta, node.rays_phi = node.livox_generator.sample_ray_angles()
 
                     # 获取激光雷达位姿
                     lidar_pose[:3, 3] = node.mj_data.site(node.site_name).xpos
@@ -283,11 +283,11 @@ def main():
 
                     start_time = time.time()
                     # 执行ray casting
-                    node.lidar.update(node.mj_data)
-                    node.lidar.trace_rays(lidar_pose, node.rays_theta, node.rays_phi)
+                    node.lidar.trace_rays(node.mj_data, node.rays_theta, node.rays_phi)
                     end_time = time.time()
 
                     points_local = node.lidar.get_hit_points()
+                    points_local = points_local @ rmat.T
 
                     # 获取激光雷达位置和方向
                     lidar_position = lidar_pose[:3, 3]
@@ -336,7 +336,7 @@ def main():
             os.killpg(os.getpgid(rviz_process.pid), signal.SIGTERM)
             rviz_process.wait(timeout=5)
             print("rviz2 进程已关闭")
-        except:
+        except Exception:
             print("强制关闭 rviz2 进程...")
             os.killpg(os.getpgid(rviz_process.pid), signal.SIGKILL)
             print("rviz2 进程已强制关闭")

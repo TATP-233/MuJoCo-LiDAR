@@ -114,8 +114,8 @@ if __name__ == "__main__":
         "--backend",
         type=str,
         default="taichi",
-        help="LiDAR后端 (cpu, taichi, jax)",
-        choices=["cpu", "taichi", "jax"],
+        help="LiDAR后端 (cpu, taichi, jax, warp)",
+        choices=["cpu", "taichi", "jax", "warp"],
     )
     args = parser.parse_args()
 

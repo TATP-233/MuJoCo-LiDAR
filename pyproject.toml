@@ -36,6 +36,10 @@ taichi = [
 jax = [
     "jax[cuda12]",
 ]
+# NVIDIA Warp backend
+warp = [
+    "warp-lang>=1.11.0",
+]
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
@@ -50,9 +54,8 @@ examples = [
 Homepage = "https://github.com/TATP-233/MuJoCo-LiDAR.git"
 Repository = "https://github.com/TATP-233/MuJoCo-LiDAR.git"
 
-[tool.setuptools]
-packages = ["mujoco_lidar"]
-package-dir = {"" = "src"}
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.setuptools.dynamic]
 version = {attr = "mujoco_lidar.__version__"}

@@ -28,6 +28,7 @@ class OnnxControllerRos2(OnnxController, Node):
         n_substeps: int,
         action_scale: float = 0.5,
         lidar_type: str = "mid360",
+        backend: str = "jax",
     ):
         super().__init__(
             mj_model,
@@ -37,6 +38,7 @@ class OnnxControllerRos2(OnnxController, Node):
             n_substeps,
             action_scale,
             lidar_type,
+            backend,
         )
         Node.__init__(self, "g1_node")
 
@@ -172,6 +174,7 @@ def load_callback(model=None, data=None):
         n_substeps=n_substeps,
         action_scale=0.5,
         lidar_type=args.lidar,
+        backend=args.backend,
     )
 
     mujoco.set_mjcb_control(policy.get_control)
@@ -188,6 +191,13 @@ if __name__ == "__main__":
         help="LiDAR型号 (airy, mid360)",
         choices=["airy", "mid360"],
     )
+    parser.add_argument(
+        "--backend",
+        type=str,
+        default="jax",
+        help="LiDAR后端 (cpu, taichi, jax, warp)",
+        choices=["cpu", "taichi", "jax", "warp"],
+    )
     args = parser.parse_args()
 
     rclpy.init()
@@ -203,7 +213,7 @@ if __name__ == "__main__":
 
     try:
         viewer.launch(loader=load_callback)
-    except:
+    except Exception:
         traceback.print_exc()
     finally:
         # 关闭 rviz2 进程
@@ -212,7 +222,7 @@ if __name__ == "__main__":
             os.killpg(os.getpgid(rviz_process.pid), signal.SIGTERM)
             rviz_process.wait(timeout=5)
             print("rviz2 进程已关闭")
-        except:
+        except Exception:
             print("强制关闭 rviz2 进程...")
             os.killpg(os.getpgid(rviz_process.pid), signal.SIGKILL)
             print("rviz2 进程已强制关闭")

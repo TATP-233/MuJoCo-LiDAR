@@ -92,7 +92,7 @@ if __name__ == "__main__":
         print(f"{name}: {result['mean_ms']:.2f}±{result['std_ms']:.2f}ms ({result['n_rays']} rays)")
 
     print("\n=== Ray Tracing Benchmark ===")
-    for backend in ["cpu", "taichi", "jax"]:
+    for backend in ["cpu", "taichi", "jax", "warp"]:
         result = benchmark_trace_rays(backend)
         if result:
             print(
