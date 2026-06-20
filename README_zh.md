@@ -39,13 +39,15 @@
 
 ### 系统要求
 
-- Python >= 3.10
+- Python >= 3.10（支持 3.10 - 3.13）
 - MuJoCo >= 3.2.0
 - NumPy >= 1.20.0
 
 ### 快速安装
 
 ```bash
+# Python 3.10 - 3.13
+
 # 基础安装（CPU 后端）
 uv add mujoco-lidar
 
@@ -68,6 +70,7 @@ uv add "mujoco-lidar[warp]"
 git clone https://github.com/TATP-233/MuJoCo-LiDAR.git
 cd MuJoCo-LiDAR
 
+# Python 3.10 - 3.13
 uv sync --extra dev --extra examples
 
 # 可选 GPU 后端

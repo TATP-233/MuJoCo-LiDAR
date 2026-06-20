@@ -11,7 +11,7 @@ authors = [
 description = "A LiDAR sensor designed for MuJoCo"
 readme = "README.md"
 license = {text = "MIT"}
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.14"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -46,7 +46,8 @@ dev = [
     "ruff>=0.3.0",
 ]
 examples = [
-    "onnxruntime>=1.19.2",
+    "onnxruntime<1.20 ; python_version < '3.11'",
+    "onnxruntime>=1.20 ; python_version >= '3.11'",
     "etils[epath]>=1.13.0",
 ]
 
