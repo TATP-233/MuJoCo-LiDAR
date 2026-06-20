@@ -172,7 +172,9 @@ class MjLidarWarp:
         geom_xpos_wp = wp.array(geom_xpos.astype(np.float32), dtype=wp.vec3, device=self.device)
         geom_xmat_wp = wp.array(geom_xmat.astype(np.float32), dtype=wp.float32, device=self.device)
         sensor_pos_wp = wp.array(sensor_pos.astype(np.float32), dtype=wp.vec3, device=self.device)
-        sensor_rot_wp = wp.array(sensor_rot.astype(np.float32), dtype=wp.float32, device=self.device)
+        sensor_rot_wp = wp.array(
+            sensor_rot.astype(np.float32), dtype=wp.float32, device=self.device
+        )
         theta_wp = wp.array(ray_theta.astype(np.float32), dtype=wp.float32, device=self.device)
         phi_wp = wp.array(ray_phi.astype(np.float32), dtype=wp.float32, device=self.device)
         distances = wp.zeros((n_envs, n_rays), dtype=wp.float32, device=self.device)
