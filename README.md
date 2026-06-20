@@ -35,6 +35,8 @@ High-performance LiDAR simulation for MuJoCo with CPU, Taichi, JAX, and Warp bac
 **From PyPI:**
 
 ```bash
+# Python 3.10-3.13
+
 # Basic (CPU only)
 uv add mujoco-lidar
 
@@ -54,6 +56,7 @@ uv add "mujoco-lidar[warp]"
 git clone https://github.com/TATP-233/MuJoCo-LiDAR.git
 cd MuJoCo-LiDAR
 
+# Python 3.10-3.13
 uv sync --extra dev --extra examples
 
 # Optional GPU backends
