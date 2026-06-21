@@ -65,6 +65,7 @@ class MjLidarWarp:
         self._aabb_lowers = wp.zeros(mj_model.ngeom, dtype=wp.vec3, device=self.device)
         self._aabb_uppers = wp.zeros(mj_model.ngeom, dtype=wp.vec3, device=self.device)
         self._bvh = wp.Bvh(self._aabb_lowers, self._aabb_uppers) if self.use_bvh else None
+        self._bvh_built = False
         self._pose = None
         self._theta = None
         self._phi = None
@@ -74,6 +75,7 @@ class MjLidarWarp:
         self._batch_aabb_lowers = None
         self._batch_aabb_uppers = None
         self._batch_bvh = None
+        self._batch_bvh_built = False
 
     def update(self, mj_data: mujoco.MjData) -> None:
         self._geom_xpos = wp.array(
@@ -98,7 +100,11 @@ class MjLidarWarp:
                 ],
                 device=self.device,
             )
-            self._bvh.rebuild()
+            if self._bvh_built:
+                self._bvh.refit()
+            else:
+                self._bvh.rebuild()
+                self._bvh_built = True
 
     def trace_rays(self, pose_4x4: np.ndarray, ray_theta: np.ndarray, ray_phi: np.ndarray) -> None:
         if ray_phi.shape[0] != ray_theta.shape[0]:
@@ -256,6 +262,7 @@ class MjLidarWarp:
                 groups=groups_wp,
             )
             self._batch_shape = shape
+            self._batch_bvh_built = False
 
         wp.launch(
             update_aabbs_batch_kernel,
@@ -272,7 +279,11 @@ class MjLidarWarp:
             ],
             device=self.device,
         )
-        self._batch_bvh.rebuild()
+        if self._batch_bvh_built:
+            self._batch_bvh.refit()
+        else:
+            self._batch_bvh.rebuild()
+            self._batch_bvh_built = True
 
     def _build_meshes(
         self, mj_model: mujoco.MjModel, geom_types: np.ndarray

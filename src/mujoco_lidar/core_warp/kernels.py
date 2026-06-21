@@ -11,29 +11,13 @@ from .geometry import (
 
 
 @wp.func
-def aabb_add_point(p: wp.vec3, lower: wp.vec3, upper: wp.vec3):
-    return wp.min(lower, p), wp.max(upper, p)
-
-
-@wp.func
 def compute_oriented_box_aabb(center: wp.vec3, size: wp.vec3, rot: wp.mat33):
-    lower = wp.vec3(1.0e20, 1.0e20, 1.0e20)
-    upper = wp.vec3(-1.0e20, -1.0e20, -1.0e20)
-    for ix in range(2):
-        sx = -1.0
-        if ix == 1:
-            sx = 1.0
-        for iy in range(2):
-            sy = -1.0
-            if iy == 1:
-                sy = 1.0
-            for iz in range(2):
-                sz = -1.0
-                if iz == 1:
-                    sz = 1.0
-                p = center + rot * wp.vec3(sx * size[0], sy * size[1], sz * size[2])
-                lower, upper = aabb_add_point(p, lower, upper)
-    return lower, upper
+    extent = wp.vec3(
+        wp.abs(rot[0, 0]) * size[0] + wp.abs(rot[0, 1]) * size[1] + wp.abs(rot[0, 2]) * size[2],
+        wp.abs(rot[1, 0]) * size[0] + wp.abs(rot[1, 1]) * size[1] + wp.abs(rot[1, 2]) * size[2],
+        wp.abs(rot[2, 0]) * size[0] + wp.abs(rot[2, 1]) * size[1] + wp.abs(rot[2, 2]) * size[2],
+    )
+    return center - extent, center + extent
 
 
 @wp.kernel
