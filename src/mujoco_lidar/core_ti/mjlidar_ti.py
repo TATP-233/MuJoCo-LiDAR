@@ -458,7 +458,7 @@ class MjLidarTi:
                     [best_t * dir_local.x, best_t * dir_local.y, best_t * dir_local.z]
                 )
             else:
-                distances[i] = 0.0
+                distances[i] = -1.0
                 hit_pts[i] = ti.Vector([0.0, 0.0, 0.0])
 
     def trace_rays_batch(self, sensor_pos, sensor_rot, theta, phi):
@@ -556,7 +556,7 @@ class MjLidarTi:
                 hit_pts[ib, ir, 1] = best_t * dir_local.y
                 hit_pts[ib, ir, 2] = best_t * dir_local.z
             else:
-                distances[ib, ir] = 0.0
+                distances[ib, ir] = -1.0
                 hit_pts[ib, ir, 0] = 0.0
                 hit_pts[ib, ir, 1] = 0.0
                 hit_pts[ib, ir, 2] = 0.0

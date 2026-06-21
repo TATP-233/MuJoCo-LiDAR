@@ -61,10 +61,10 @@ class MjLidarCPU:
             cutoff=self.cutoff_dist,
         )
         # Calculate the point's position in local frame from vec + dist
-        self._dist[_geomid == -1] = 0
+        self._dist[_geomid == -1] = -1
 
         # Update the pcl frame with local frame data
-        self._hit_points = local_vecs * self._dist[:, np.newaxis]
+        self._hit_points = local_vecs * np.maximum(self._dist, 0)[:, np.newaxis]
 
     def get_hit_points(self) -> np.ndarray | None:
         return self._hit_points

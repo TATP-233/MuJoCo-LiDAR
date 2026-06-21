@@ -169,7 +169,7 @@ def load_callback(model=None, data=None):
     policy = OnnxControllerRos2(
         model,
         policy_path=(_ONNX_DIR / "go2_policy.onnx").as_posix(),
-        default_angles=np.array(model.keyframe("home").qpos[7 : 7 + _JOINT_NUM]),
+        default_angles=np.array(model.key_qpos[0, 7 : 7 + _JOINT_NUM]),
         n_substeps=n_substeps,
         action_scale=0.5,
         lidar_type=args.lidar,

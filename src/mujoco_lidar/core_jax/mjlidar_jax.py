@@ -298,8 +298,7 @@ class MjLidarJax:
             )
             min_dist = jnp.minimum(min_dist, d_hfields)
 
-        # Replace inf with 0.0 (no hit)
-        distance = jnp.where(jnp.isinf(min_dist), 0.0, min_dist)
+        distance = jnp.where(jnp.isinf(min_dist), -1.0, min_dist)
 
         return distance
 

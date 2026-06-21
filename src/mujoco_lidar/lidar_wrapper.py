@@ -258,7 +258,7 @@ class MjLidarWrapper:
         if self.backend == "jax":
             if self._distances is None or self._local_rays is None:
                 return np.zeros((0, 3), dtype=np.float32)
-            return np.asarray(self._distances[:, np.newaxis] * self._local_rays)
+            return np.asarray(np.maximum(self._distances, 0)[:, np.newaxis] * self._local_rays)
         return self._backend_instance.get_hit_points()
 
     def get_distances(self) -> np.ndarray:

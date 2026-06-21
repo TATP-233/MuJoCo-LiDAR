@@ -2,7 +2,7 @@ import json
 import sys
 from pathlib import Path
 
-from benchmark_core import benchmark_trace_rays
+from benchmark_core import _TRACE_SCENES, benchmark_trace_rays
 
 BASELINE_FILE = Path(__file__).parent / "baselines" / "baseline.json"
 REGRESSION_THRESHOLD = 0.05  # 5% 性能下降阈值
@@ -25,7 +25,10 @@ def check_regression():
     baseline = load_baseline()
 
     # 运行当前基准测试
-    current = {"cpu": benchmark_trace_rays("cpu")}
+    current = {
+        f"{scene_name}/cpu": benchmark_trace_rays(scene_name, scene_file, backend="cpu")
+        for scene_name, scene_file in _TRACE_SCENES.items()
+    }
 
     if baseline is None:
         print("No baseline found, saving current results as baseline")
