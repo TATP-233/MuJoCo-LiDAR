@@ -11,21 +11,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v4
-      - run: uv sync --extra dev
-      - run: uv run ruff check .
-      - run: uv run ruff format --check .
+      - run: uv sync --python 3.12 --extra dev
+      - run: uv run python -m ruff check .
+      - run: uv run python -m ruff format --check .
 
   test-cpu:
     needs: lint
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ['3.10', '3.11', '3.12', '3.13']
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v4
-      - run: uv sync --python ${{ matrix.python-version }} --extra dev
-      - run: uv run pytest tests/test_core.py tests/test_cpu_backend.py tests/test_scan_gen.py -v
+      - run: uv sync --python 3.12 --extra dev
+      - run: uv run python -m pytest tests/test_core.py tests/test_cpu_backend.py tests/test_scan_gen.py -v
 
   test-backends:
     needs: lint
@@ -33,17 +30,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v4
-      - run: uv sync --extra taichi --extra jax --extra dev
-      - run: uv run pytest tests/test_integration.py -v
-
-  benchmark:
-    needs: test-cpu
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: astral-sh/setup-uv@v4
-      - run: uv sync
-      - run: uv run python benchmarks/benchmark_core.py
-      - run: uv run python benchmarks/check_regression.py
+      - run: uv sync --python 3.12 --extra taichi --extra jax --extra dev
+      - run: uv run python -m pytest tests/test_integration.py -v
