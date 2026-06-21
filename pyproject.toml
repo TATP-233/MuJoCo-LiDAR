@@ -23,7 +23,6 @@ dependencies = [
     "scipy",
     "pynput",
     "matplotlib",
-    "zhplot",
 ]
 
 [project.optional-dependencies]
