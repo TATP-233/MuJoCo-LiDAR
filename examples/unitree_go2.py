@@ -131,7 +131,7 @@ if __name__ == "__main__":
     policy = OnnxController(
         mj_model,
         policy_path=(_ONNX_DIR / "go2_policy.onnx").as_posix(),
-        default_angles=np.array(mj_model.keyframe("home").qpos[7 : 7 + _JOINT_NUM]),
+        default_angles=np.array(mj_model.key_qpos[0, 7 : 7 + _JOINT_NUM]),
         n_substeps=int(round(ctrl_dt / mj_model.opt.timestep)),
         action_scale=0.5,
         lidar_type=args.lidar,

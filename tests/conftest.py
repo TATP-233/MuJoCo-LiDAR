@@ -22,6 +22,6 @@ def simple_model():
 @pytest.fixture
 def simple_rays():
     """简单射线模式"""
-    theta = np.array([0, np.pi / 4, np.pi / 2])
-    phi = np.array([0, 0, 0])
+    theta = np.array([0, np.pi / 4, np.pi / 2], dtype=np.float32)
+    phi = np.array([0, 0, 0], dtype=np.float32)
     return theta, phi

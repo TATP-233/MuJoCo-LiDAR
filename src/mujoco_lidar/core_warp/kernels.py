@@ -232,7 +232,7 @@ def trace_rays_kernel(
         if geom_type >= 0:
             t = -1.0
             rot = read_mat33(geom_xmat, geom_id)
-            if geom_type == 7:
+            if geom_type == 1 or geom_type == 7:
                 mesh_idx = geom_mesh_ids[geom_id]
                 if mesh_idx >= 0:
                     t = ray_mesh_distance(
@@ -259,7 +259,7 @@ def trace_rays_kernel(
         distances[ray_id] = best
         hit_points[ray_id] = best * local_dir
     else:
-        distances[ray_id] = 0.0
+        distances[ray_id] = -1.0
         hit_points[ray_id] = wp.vec3(0.0, 0.0, 0.0)
 
 
@@ -300,7 +300,7 @@ def trace_rays_bvh_kernel(
         if geom_type >= 0:
             t = -1.0
             rot = read_mat33(geom_xmat, geom_id)
-            if geom_type == 7:
+            if geom_type == 1 or geom_type == 7:
                 mesh_idx = geom_mesh_ids[geom_id]
                 if mesh_idx >= 0:
                     t = ray_mesh_distance(
@@ -327,7 +327,7 @@ def trace_rays_bvh_kernel(
         distances[ray_id] = best
         hit_points[ray_id] = best * local_dir
     else:
-        distances[ray_id] = 0.0
+        distances[ray_id] = -1.0
         hit_points[ray_id] = wp.vec3(0.0, 0.0, 0.0)
 
 
@@ -376,7 +376,7 @@ def trace_rays_batch_kernel(
         if geom_type >= 0:
             t = -1.0
             geom_rot = read_mat33_batch(geom_xmat, env_id, geom_id)
-            if geom_type == 7:
+            if geom_type == 1 or geom_type == 7:
                 mesh_idx = geom_mesh_ids[geom_id]
                 if mesh_idx >= 0:
                     t = ray_mesh_distance(
@@ -403,7 +403,7 @@ def trace_rays_batch_kernel(
         distances[env_id, ray_id] = best
         hit_points[env_id, ray_id] = best * local_dir
     else:
-        distances[env_id, ray_id] = 0.0
+        distances[env_id, ray_id] = -1.0
         hit_points[env_id, ray_id] = wp.vec3(0.0, 0.0, 0.0)
 
 
@@ -459,7 +459,7 @@ def trace_rays_batch_bvh_kernel(
             geom_rot = read_mat33_batch(geom_xmat, env_id, geom_id)
             if geom_type < 0:
                 pass
-            elif geom_type == 7:
+            elif geom_type == 1 or geom_type == 7:
                 mesh_idx = geom_mesh_ids[geom_id]
                 if mesh_idx >= 0:
                     t = ray_mesh_distance(
@@ -486,5 +486,5 @@ def trace_rays_batch_bvh_kernel(
         distances[env_id, ray_id] = best
         hit_points[env_id, ray_id] = best * local_dir
     else:
-        distances[env_id, ray_id] = 0.0
+        distances[env_id, ray_id] = -1.0
         hit_points[env_id, ray_id] = wp.vec3(0.0, 0.0, 0.0)

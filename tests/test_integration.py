@@ -10,6 +10,7 @@ def test_backend_consistency(simple_model, simple_rays, backend):
     try:
         lidar = MjLidarWrapper(simple_model, site_name="lidar_site", backend=backend)
         data = mujoco.MjData(simple_model)
+        mujoco.mj_forward(simple_model, data)
         theta, phi = simple_rays
         ranges = lidar.trace_rays(data, theta, phi)
         assert len(ranges) == len(theta)

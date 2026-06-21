@@ -95,6 +95,19 @@ def test_warp_backend_batch_trace_separates_scenes(simple_model):
     np.testing.assert_allclose(distances, np.array([[0.5], [1.5]], dtype=np.float32), atol=1e-5)
 
 
+def test_warp_backend_returns_negative_one_on_miss(simple_model):
+    data = mujoco.MjData(simple_model)
+    mujoco.mj_forward(simple_model, data)
+    theta = np.array([np.pi / 2], dtype=np.float32)
+    phi = np.array([0.0], dtype=np.float32)
+
+    cpu_lidar = MjLidarWrapper(simple_model, site_name="lidar_site", backend="cpu")
+    warp_lidar = MjLidarWrapper(simple_model, site_name="lidar_site", backend="warp")
+
+    np.testing.assert_allclose(cpu_lidar.trace_rays(data, theta, phi), np.array([-1.0]))
+    np.testing.assert_allclose(warp_lidar.trace_rays(data, theta, phi), np.array([-1.0]))
+
+
 def test_warp_backend_mesh_matches_cpu():
     xml = """
     <mujoco>
@@ -160,3 +173,30 @@ def test_warp_backend_mesh_uses_dynamic_geom_pose():
 
     np.testing.assert_allclose(near, np.array([1.0], dtype=np.float32), atol=1e-5)
     np.testing.assert_allclose(far, np.array([2.0], dtype=np.float32), atol=1e-5)
+
+
+def test_warp_backend_hfield_matches_cpu():
+    xml = """
+    <mujoco>
+      <asset>
+        <hfield name="terrain" nrow="2" ncol="2" size="1 1 1 0.1" elevation="0 0 0 0"/>
+      </asset>
+      <worldbody>
+        <geom type="hfield" hfield="terrain"/>
+        <site name="lidar_site" pos="0 0 1"/>
+      </worldbody>
+    </mujoco>
+    """
+    model = mujoco.MjModel.from_xml_string(xml)
+    data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
+    theta = np.array([0.0], dtype=np.float32)
+    phi = np.array([-np.pi / 2], dtype=np.float32)
+
+    cpu_lidar = MjLidarWrapper(model, site_name="lidar_site", backend="cpu")
+    warp_lidar = MjLidarWrapper(model, site_name="lidar_site", backend="warp")
+
+    cpu_ranges = cpu_lidar.trace_rays(data, theta, phi)
+    warp_ranges = warp_lidar.trace_rays(data, theta, phi)
+
+    np.testing.assert_allclose(warp_ranges, cpu_ranges, atol=1e-5)

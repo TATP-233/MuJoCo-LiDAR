@@ -278,27 +278,62 @@ class MjLidarWarp:
         self, mj_model: mujoco.MjModel, geom_types: np.ndarray
     ) -> tuple[list[wp.Mesh], np.ndarray]:
         geom_mesh_ids = np.full(mj_model.ngeom, -1, dtype=np.int32)
-        mesh_index_by_dataid: dict[int, int] = {}
+        mesh_index_by_dataid: dict[tuple[int, int], int] = {}
         meshes: list[wp.Mesh] = []
 
         for geom_id, data_id in enumerate(mj_model.geom_dataid):
-            if geom_types[geom_id] != 7 or data_id < 0:
+            if geom_types[geom_id] not in (1, 7) or data_id < 0:
                 continue
-            if data_id not in mesh_index_by_dataid:
-                vert_adr = mj_model.mesh_vertadr[data_id]
-                vert_num = mj_model.mesh_vertnum[data_id]
-                face_adr = mj_model.mesh_faceadr[data_id]
-                face_num = mj_model.mesh_facenum[data_id]
+            mesh_key = (int(geom_types[geom_id]), int(data_id))
+            if mesh_key not in mesh_index_by_dataid:
+                if geom_types[geom_id] == 1:
+                    points, faces = self._build_hfield_mesh(mj_model, data_id)
+                else:
+                    vert_adr = mj_model.mesh_vertadr[data_id]
+                    vert_num = mj_model.mesh_vertnum[data_id]
+                    face_adr = mj_model.mesh_faceadr[data_id]
+                    face_num = mj_model.mesh_facenum[data_id]
 
-                points = mj_model.mesh_vert[vert_adr : vert_adr + vert_num].astype(np.float32)
-                faces = mj_model.mesh_face[face_adr : face_adr + face_num].astype(np.int32)
+                    points = mj_model.mesh_vert[vert_adr : vert_adr + vert_num].astype(np.float32)
+                    faces = mj_model.mesh_face[face_adr : face_adr + face_num].astype(np.int32)
                 mesh = wp.Mesh(
                     points=wp.array(points, dtype=wp.vec3, device=self.device),
                     indices=wp.array(faces.reshape(-1), dtype=wp.int32, device=self.device),
                 )
-                mesh_index_by_dataid[data_id] = len(meshes)
+                mesh_index_by_dataid[mesh_key] = len(meshes)
                 meshes.append(mesh)
 
-            geom_mesh_ids[geom_id] = mesh_index_by_dataid[data_id]
+            geom_mesh_ids[geom_id] = mesh_index_by_dataid[mesh_key]
 
         return meshes, geom_mesh_ids
+
+    def _build_hfield_mesh(
+        self, mj_model: mujoco.MjModel, hfield_id: int
+    ) -> tuple[np.ndarray, np.ndarray]:
+        nrow = mj_model.hfield_nrow[hfield_id]
+        ncol = mj_model.hfield_ncol[hfield_id]
+        adr = mj_model.hfield_adr[hfield_id]
+        data = mj_model.hfield_data[adr : adr + nrow * ncol].reshape(nrow, ncol)
+        size = mj_model.hfield_size[hfield_id]
+        rx, ry, ez = size[0], size[1], size[2]
+
+        x = np.linspace(-rx, rx, ncol, dtype=np.float32)
+        y = np.linspace(-ry, ry, nrow, dtype=np.float32)
+        xx, yy = np.meshgrid(x, y)
+        points = np.stack((xx, yy, data * ez), axis=-1).reshape(-1, 3).astype(np.float32)
+
+        cells = np.arange((nrow - 1) * (ncol - 1), dtype=np.int32).reshape(nrow - 1, ncol - 1)
+        row = cells // (ncol - 1)
+        col = cells % (ncol - 1)
+        v00 = row * ncol + col
+        v10 = v00 + 1
+        v01 = v00 + ncol
+        v11 = v01 + 1
+        faces = np.stack(
+            (
+                np.stack((v00, v10, v11), axis=-1),
+                np.stack((v00, v11, v01), axis=-1),
+            ),
+            axis=2,
+        ).reshape(-1, 3)
+        return points, faces.astype(np.int32)
