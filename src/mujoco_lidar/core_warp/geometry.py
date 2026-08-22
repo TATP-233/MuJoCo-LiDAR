@@ -92,7 +92,7 @@ def ray_cylinder_distance(
 ):
     ro, rd = transform_ray_to_local(ray_origin, ray_dir, center, rot)
     radius = size[0]
-    half_height = size[1]
+    half_height = size[2]
     best = 1.0e20
 
     a = rd[0] * rd[0] + rd[1] * rd[1]
@@ -174,7 +174,7 @@ def ray_capsule_distance(
 ):
     ro, rd = transform_ray_to_local(ray_origin, ray_dir, center, rot)
     radius = size[0]
-    half_height = size[1]
+    half_height = size[2]
     best = ray_cylinder_distance(ray_origin, ray_dir, center, size, rot)
     if best < 0.0:
         best = 1.0e20
