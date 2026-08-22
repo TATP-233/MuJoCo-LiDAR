@@ -200,3 +200,31 @@ def test_warp_backend_hfield_matches_cpu():
     warp_ranges = warp_lidar.trace_rays(data, theta, phi)
 
     np.testing.assert_allclose(warp_ranges, cpu_ranges, atol=1e-5)
+
+
+def test_warp_backend_capsule_cylinder_match_cpu():
+    xml = """
+    <mujoco>
+      <worldbody>
+        <geom type="capsule" pos="2 0 0.5" quat="0.7071068 0 0.7071068 0" size="0.3 0.8"/>
+        <geom type="capsule" pos="0 3 -0.2" size="0.2 0.5"/>
+        <geom type="cylinder" pos="-2 0 0" size="0.4 0.9"/>
+        <site name="lidar_site" pos="0 0 0"/>
+      </worldbody>
+    </mujoco>
+    """
+    model = mujoco.MjModel.from_xml_string(xml)
+    data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
+
+    rng = np.random.default_rng(0)
+    theta = rng.uniform(0, np.pi, 2000).astype(np.float32)
+    phi = rng.uniform(-np.pi / 2, np.pi / 2, 2000).astype(np.float32)
+
+    cpu_lidar = MjLidarWrapper(model, site_name="lidar_site", backend="cpu")
+    warp_lidar = MjLidarWrapper(model, site_name="lidar_site", backend="warp")
+
+    cpu_ranges = cpu_lidar.trace_rays(data, theta, phi)
+    warp_ranges = warp_lidar.trace_rays(data, theta, phi)
+
+    np.testing.assert_allclose(warp_ranges, cpu_ranges, atol=1e-5)
