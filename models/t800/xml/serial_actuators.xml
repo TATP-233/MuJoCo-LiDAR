@@ -1,0 +1,63 @@
+<mujoco model="serial_actuators">
+
+    <!-- <actuator>
+        <motor name="motor_J00_HIP_PITCH_L" joint="J00_HIP_PITCH_L" gear="1" ctrllimited="true" ctrlrange="-415 415" />
+        <motor name="motor_J01_HIP_ROLL_L" joint="J01_HIP_ROLL_L" gear="1" ctrllimited="true" ctrlrange="-370 370" />
+        <motor name="motor_J02_HIP_YAW_L" joint="J02_HIP_YAW_L" gear="1" ctrllimited="true" ctrlrange="-222 222" />
+        <motor name="motor_J03_KNEE_PITCH_L" joint="J03_KNEE_PITCH_L" gear="1" ctrllimited="true" ctrlrange="-415 415" />
+        <motor name="motor_J04_ANKLE_PITCH_L" joint="J04_ANKLE_PITCH_L" gear="1" ctrllimited="true" ctrlrange="-160 160" />
+        <motor name="motor_J05_ANKLE_ROLL_L" joint="J05_ANKLE_ROLL_L" gear="1" ctrllimited="true" ctrlrange="-160 160" />
+        <motor name="motor_J06_HIP_PITCH_R" joint="J06_HIP_PITCH_R" gear="1" ctrllimited="true" ctrlrange="-415 415" />
+        <motor name="motor_J07_HIP_ROLL_R" joint="J07_HIP_ROLL_R" gear="1" ctrllimited="true" ctrlrange="-370 370" />
+        <motor name="motor_J08_HIP_YAW_R" joint="J08_HIP_YAW_R" gear="1" ctrllimited="true" ctrlrange="-222 222" />
+        <motor name="motor_J09_KNEE_PITCH_R" joint="J09_KNEE_PITCH_R" gear="1" ctrllimited="true" ctrlrange="-415 415" />
+        <motor name="motor_J10_ANKLE_PITCH_R" joint="J10_ANKLE_PITCH_R" gear="1" ctrllimited="true" ctrlrange="-160 160" />
+        <motor name="motor_J11_ANKLE_ROLL_R" joint="J11_ANKLE_ROLL_R" gear="1" ctrllimited="true" ctrlrange="-160 160" />
+
+        <motor name="motor_J12_TORSO_YAW" joint="J12_TORSO_YAW" gear="1" ctrllimited="true" ctrlrange="-222 222" />
+
+        <motor name="motor_J13_SHOULDER_PITCH_L" joint="J13_SHOULDER_PITCH_L" gear="1" ctrllimited="true" ctrlrange="-160 160" />
+        <motor name="motor_J14_SHOULDER_ROLL_L" joint="J14_SHOULDER_ROLL_L" gear="1" ctrllimited="true" ctrlrange="-160 160" />
+        <motor name="motor_J15_SHOULDER_YAW_L" joint="J15_SHOULDER_YAW_L" gear="1" ctrllimited="true" ctrlrange="-160 160" />
+        <motor name="motor_J16_ELBOW_PITCH_L" joint="J16_ELBOW_PITCH_L" gear="1" ctrllimited="true" ctrlrange="-160 160" />
+        <motor name="motor_J17_ELBOW_YAW_L" joint="J17_ELBOW_YAW_L" gear="1" ctrllimited="true" ctrlrange="-52 52" />
+
+        <motor name="motor_J18_SHOULDER_PITCH_R" joint="J18_SHOULDER_PITCH_R" gear="1" ctrllimited="true" ctrlrange="-160 160" />
+        <motor name="motor_J19_SHOULDER_ROLL_R" joint="J19_SHOULDER_ROLL_R" gear="1" ctrllimited="true" ctrlrange="-160 160" />
+        <motor name="motor_J20_SHOULDER_YAW_R" joint="J20_SHOULDER_YAW_R" gear="1" ctrllimited="true" ctrlrange="-160 160" />
+        <motor name="motor_J21_ELBOW_PITCH_R" joint="J21_ELBOW_PITCH_R" gear="1" ctrllimited="true" ctrlrange="-160 160" />
+        <motor name="motor_J22_ELBOW_YAW_R" joint="J22_ELBOW_YAW_R" gear="1" ctrllimited="true" ctrlrange="-52 52" />
+
+        <motor name="motor_J23_HEAD_PITCH" joint="J23_HEAD_PITCH" gear="1" ctrllimited="true" ctrlrange="-52 52" />
+        <motor name="motor_J24_HEAD_YAW" joint="J24_HEAD_YAW" gear="1" ctrllimited="true" ctrlrange="-52 52" />
+    </actuator> -->
+
+    <actuator>
+        <position name="J00_HIP_PITCH_L" joint="J00_HIP_PITCH_L" kp="180" kv="5" forcerange="-415 415" ctrlrange="-3.316 2.269" ctrllimited="true" forcelimited="true" />
+        <position name="J01_HIP_ROLL_L" joint="J01_HIP_ROLL_L" kp="100" kv="3" forcerange="-370 370" ctrlrange="-1.082 2.059" ctrllimited="true" forcelimited="true" />
+        <position name="J02_HIP_YAW_L" joint="J02_HIP_YAW_L" kp="100" kv="3" forcerange="-222 222" ctrlrange="-1.42245 3.60228" ctrllimited="true" forcelimited="true" />
+        <position name="J03_KNEE_PITCH_L" joint="J03_KNEE_PITCH_L" kp="180" kv="5" forcerange="-415 415" ctrlrange="-0.261667 2.355" ctrllimited="true" forcelimited="true" />
+        <position name="J04_ANKLE_PITCH_L" joint="J04_ANKLE_PITCH_L" kp="40" kv="0.3" forcerange="-160 160" ctrlrange="-0.68068 0.68068" ctrllimited="true" forcelimited="true" />
+        <position name="J05_ANKLE_ROLL_L" joint="J05_ANKLE_ROLL_L" kp="40" kv="0.3" forcerange="-160 160" ctrlrange="-0.3491 0.1745" ctrllimited="true" forcelimited="true" />
+        <position name="J06_HIP_PITCH_R" joint="J06_HIP_PITCH_R" kp="180" kv="5" forcerange="-415 415" ctrlrange="-3.316 2.269" ctrllimited="true" forcelimited="true" />
+        <position name="J07_HIP_ROLL_R" joint="J07_HIP_ROLL_R" kp="100" kv="3" forcerange="-370 370" ctrlrange="-2.059 1.082" ctrllimited="true" forcelimited="true" />
+        <position name="J08_HIP_YAW_R" joint="J08_HIP_YAW_R" kp="100" kv="3" forcerange="-222 222" ctrlrange="-3.60228 1.42245" ctrllimited="true" forcelimited="true" />
+        <position name="J09_KNEE_PITCH_R" joint="J09_KNEE_PITCH_R" kp="180" kv="5" forcerange="-415 415" ctrlrange="-0.261667 2.355" ctrllimited="true" forcelimited="true" />
+        <position name="J10_ANKLE_PITCH_R" joint="J10_ANKLE_PITCH_R" kp="40" kv="0.3" forcerange="-160 160" ctrlrange="-0.68068 0.68068" ctrllimited="true" forcelimited="true" />
+        <position name="J11_ANKLE_ROLL_R" joint="J11_ANKLE_ROLL_R" kp="40" kv="0.3" forcerange="-160 160" ctrlrange="-0.1745 0.3491" ctrllimited="true" forcelimited="true" />
+        <position name="J12_TORSO_YAW" joint="J12_TORSO_YAW" kp="100" kv="5" forcerange="-222 222" ctrlrange="-4.381 1.2392" ctrllimited="true" forcelimited="true" />
+        <position name="J13_SHOULDER_PITCH_L" joint="J13_SHOULDER_PITCH_L" kp="60" kv="0.3" forcerange="-160 160" ctrlrange="-2.967 2.793" ctrllimited="true" forcelimited="true" />
+        <position name="J14_SHOULDER_ROLL_L" joint="J14_SHOULDER_ROLL_L" kp="50" kv="0.3" forcerange="-160 160" ctrlrange="-0.384 2.443" ctrllimited="true" forcelimited="true" />
+        <position name="J15_SHOULDER_YAW_L" joint="J15_SHOULDER_YAW_L" kp="50" kv="0.3" forcerange="-160 160" ctrlrange="-2.618 2.618" ctrllimited="true" forcelimited="true" />
+        <position name="J16_ELBOW_PITCH_L" joint="J16_ELBOW_PITCH_L" kp="60" kv="0.3" forcerange="-160 160" ctrlrange="-2.286 0.262" ctrllimited="true" forcelimited="true" />
+        <position name="J17_ELBOW_YAW_L" joint="J17_ELBOW_YAW_L" kp="50" kv="0.3" forcerange="-52 52" ctrlrange="-2.618 2.618" ctrllimited="true" forcelimited="true" />
+        <position name="J18_SHOULDER_PITCH_R" joint="J18_SHOULDER_PITCH_R" kp="60" kv="0.3" forcerange="-160 160" ctrlrange="-2.967 2.793" ctrllimited="true" forcelimited="true" />
+        <position name="J19_SHOULDER_ROLL_R" joint="J19_SHOULDER_ROLL_R" kp="50" kv="0.3" forcerange="-160 160" ctrlrange="-2.443 0.384" ctrllimited="true" forcelimited="true" />
+        <position name="J20_SHOULDER_YAW_R" joint="J20_SHOULDER_YAW_R" kp="50" kv="0.3" forcerange="-160 160" ctrlrange="-2.618 2.618" ctrllimited="true" forcelimited="true" />
+        <position name="J21_ELBOW_PITCH_R" joint="J21_ELBOW_PITCH_R" kp="60" kv="0.3" forcerange="-160 160" ctrlrange="-2.286 0.262" ctrllimited="true" forcelimited="true" />
+        <position name="J22_ELBOW_YAW_R" joint="J22_ELBOW_YAW_R" kp="50" kv="0.3" forcerange="-52 52" ctrlrange="-2.618 2.618" ctrllimited="true" forcelimited="true" />
+        <position name="J23_HEAD_PITCH" joint="J23_HEAD_PITCH" kp="100" kv="1" forcerange="-52 52" ctrlrange="-0.523 0.523" ctrllimited="true" forcelimited="true" />
+        <position name="J24_HEAD_YAW" joint="J24_HEAD_YAW" kp="100" kv="1" forcerange="-52 52" ctrlrange="-1.222 1.222" ctrllimited="true" forcelimited="true" />
+    </actuator>
+
+</mujoco>

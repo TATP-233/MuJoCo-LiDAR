@@ -1,0 +1,729 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- 170-T800-AL-newsystem-20251127 -->
+<robot name="t800">
+  <link name="LINK_BASE">
+    <inertial>
+      <origin xyz="-0.00113725 -0.00039847 0.03264622" rpy="0 0 0" />
+      <mass value="10.15411355" />
+      <inertia ixx="0.05091346" ixy="-6.512e-05" ixz="-0.00052668" iyy="0.03420785" iyz="-7.559e-05" izz="0.03312684" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_BASE.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.01 0 0.01" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.09" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LINK_HIP_PITCH_L">
+    <inertial>
+      <origin xyz="0.0061914 0.03919396 -0.09899764" rpy="0 0 0" />
+      <mass value="3.53618815" />
+      <inertia ixx="0.00712783" ixy="-4.224e-05" ixz="0.00027962" iyy="0.00791389" iyz="0.00036741" izz="0.00484137" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_HIP_PITCH_L.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.04 -0.10" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.07" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J00_HIP_PITCH_L" type="revolute">
+    <origin xyz="0.0 0.079178 0.0" rpy="0 0 0" />
+    <parent link="LINK_BASE" />
+    <child link="LINK_HIP_PITCH_L" />
+    <axis xyz="0.0 0.96593 -0.25882" />
+    <limit lower="-3.316" upper="2.269" effort="415" velocity="25.96" />
+  </joint>
+  <link name="LINK_HIP_ROLL_L">
+    <inertial>
+      <origin xyz="0.03753088 4.95e-06 -0.03484554" rpy="0 0 0" />
+      <mass value="0.8514425" />
+      <inertia ixx="0.00244215" ixy="-7e-08" ixz="-0.00068625" iyy="0.00257237" iyz="4e-08" izz="0.00193429" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_HIP_ROLL_L.dae" />
+      </geometry>
+    </visual>
+  </link>
+  <joint name="J01_HIP_ROLL_L" type="revolute">
+    <origin xyz="0.004662 0.040322 -0.10752" rpy="0 0 0" />
+    <parent link="LINK_HIP_PITCH_L" />
+    <child link="LINK_HIP_ROLL_L" />
+    <axis xyz="1.0 0.0 0.0" />
+    <limit lower="-1.082" upper="2.059" effort="370" velocity="25.31" />
+  </joint>
+  <link name="LINK_HIP_YAW_L">
+    <inertial>
+      <origin xyz="-0.01829844 0.00236123 -0.17634684" rpy="0 0 0" />
+      <mass value="7.19482187" />
+      <inertia ixx="0.11175893" ixy="0.0003057" ixz="-0.01510969" iyy="0.11561981" iyz="0.00193035" izz="0.01307465" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_HIP_YAW_L.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.002 -0.10" rpy="0 0 0" />
+      <geometry>
+        <box size="0.10 0.12 0.18" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J02_HIP_YAW_L" type="revolute">
+    <origin xyz="0.0094616 0.0 -0.080512" rpy="0 0 0" />
+    <parent link="LINK_HIP_ROLL_L" />
+    <child link="LINK_HIP_YAW_L" />
+    <axis xyz="0.0 0.0 1.0" />
+    <limit lower="-1.42244667" upper="3.6022778" effort="222" velocity="23.19" />
+  </joint>
+  <link name="LINK_KNEE_PITCH_L">
+    <inertial>
+      <origin xyz="-0.01974485 0.00139162 -0.21190749" rpy="0 0 0" />
+      <mass value="5.99503443" />
+      <inertia ixx="0.08550064" ixy="-0.00012712" ixz="-0.0039275" iyy="0.08578017" iyz="-0.0007153" izz="0.01178722" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_KNEE_PITCH_L.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.0 -0.0 -0.0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.08" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.02 -0.0 -0.25" rpy="0 0.08 0" />
+      <geometry>
+        <box size="0.11 0.09 0.24" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J03_KNEE_PITCH_L" type="revolute">
+    <origin xyz="-0.037707 0.0 -0.28792" rpy="0 0 0" />
+    <parent link="LINK_HIP_YAW_L" />
+    <child link="LINK_KNEE_PITCH_L" />
+    <axis xyz="0.0 1.0 0.0" />
+    <limit lower="0.0" upper="2.355" effort="415" velocity="25.96" />
+  </joint>
+  <link name="LINK_ANKLE_PITCH_L">
+    <inertial>
+      <origin xyz="-3.678e-05 0.0 -0.00887033" rpy="0 0 0" />
+      <mass value="0.14422136" />
+      <inertia ixx="6.785e-05" ixy="0.0" ixz="8.9e-07" iyy="8.493e-05" iyz="0.0" izz="3.827e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_ANKLE_PITCH_L.dae" />
+      </geometry>
+    </visual>
+  </link>
+  <joint name="J04_ANKLE_PITCH_L" type="revolute">
+    <origin xyz="-0.0027168 0.0 -0.43867" rpy="0 0 0" />
+    <parent link="LINK_KNEE_PITCH_L" />
+    <child link="LINK_ANKLE_PITCH_L" />
+    <axis xyz="0.0 1.0 0.0" />
+    <limit lower="-0.68068" upper="0.68068" effort="160" velocity="33.51" />
+  </joint>
+  <link name="LINK_ANKLE_ROLL_L">
+    <inertial>
+      <origin xyz="-0.00128738 -0.00120638 -0.0229558" rpy="0 0 0" />
+      <mass value="1.49439088" />
+      <inertia ixx="0.00225678" ixy="0.00013425" ixz="0.00102424" iyy="0.00706643" iyz="-3.805e-05" izz="0.00669016" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_ANKLE_ROLL_L.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_ANKLE_ROLL_L.dae" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J05_ANKLE_ROLL_L" type="revolute">
+    <origin xyz="0.0011073 0.0 -0.037928" rpy="0 0 0" />
+    <parent link="LINK_ANKLE_PITCH_L" />
+    <child link="LINK_ANKLE_ROLL_L" />
+    <axis xyz="1.0 0.0 0.0" />
+    <limit lower="-0.3491" upper="0.1745" effort="160" velocity="33.51" />
+  </joint>
+  <link name="LINK_FOOT_L">
+    <inertial>
+      <mass value="1e-3" />
+      <inertia ixx="1e-12" ixy="0" ixz="0" iyy="1e-12" iyz="0" izz="1e-12" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.02" />
+      </geometry>
+      <material name="">
+        <color rgba="0.75294 0.75294 0.75294 1.0" />
+      </material>
+    </visual>
+  </link>
+  <joint name="J_FIXED_FOOT_L" type="fixed">
+    <origin xyz="0.0 0.0 -0.06453" rpy="0 0 0" />
+    <parent link="LINK_ANKLE_ROLL_L" />
+    <child link="LINK_FOOT_L" />
+  </joint>
+
+  <link name="LINK_HIP_PITCH_R">
+    <inertial>
+      <origin xyz="0.0061914 -0.03919396 -0.09899764" rpy="0 0 0" />
+      <mass value="3.53618815" />
+      <inertia ixx="0.00712783" ixy="4.224e-05" ixz="0.00027962" iyy="0.00791389" iyz="-0.00036741" izz="0.00484137" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_HIP_PITCH_R.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.0 -0.04 -0.10" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.07" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J06_HIP_PITCH_R" type="revolute">
+    <origin xyz="0.0 -0.079178 0.0" rpy="0 0 0" />
+    <parent link="LINK_BASE" />
+    <child link="LINK_HIP_PITCH_R" />
+    <axis xyz="0.0 0.96593 0.25882" />
+    <limit lower="-3.316" upper="2.269" effort="415" velocity="25.96" />
+  </joint>
+  <link name="LINK_HIP_ROLL_R">
+    <inertial>
+      <origin xyz="0.03753088 -4.95e-06 -0.03484554" rpy="0 0 0" />
+      <mass value="0.8514425" />
+      <inertia ixx="0.00244215" ixy="7e-08" ixz="-0.00068625" iyy="0.00257237" iyz="-4e-08" izz="0.00193429" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_HIP_ROLL_R.dae" />
+      </geometry>
+    </visual>
+  </link>
+  <joint name="J07_HIP_ROLL_R" type="revolute">
+    <origin xyz="0.004662 -0.040322 -0.10752" rpy="0 0 0" />
+    <parent link="LINK_HIP_PITCH_R" />
+    <child link="LINK_HIP_ROLL_R" />
+    <axis xyz="1.0 0.0 0.0" />
+    <limit lower="-2.059" upper="1.082" effort="370" velocity="25.31" />
+  </joint>
+  <link name="LINK_HIP_YAW_R">
+    <inertial>
+      <origin xyz="-0.01829844 -0.00236123 -0.17634684" rpy="0 0 0" />
+      <mass value="7.19482187" />
+      <inertia ixx="0.11175893" ixy="-0.0003057" ixz="-0.01510969" iyy="0.11561981" iyz="-0.00193035" izz="0.01307465" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_HIP_YAW_R.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.002 -0.10" rpy="0 0 0" />
+      <geometry>
+        <box size="0.10 0.12 0.18" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J08_HIP_YAW_R" type="revolute">
+    <origin xyz="0.0094616 0.0 -0.080512" rpy="0 0 0" />
+    <parent link="LINK_HIP_ROLL_R" />
+    <child link="LINK_HIP_YAW_R" />
+    <axis xyz="0.0 0.0 1.0" />
+    <limit lower="-3.6022778" upper="1.42244667" effort="222" velocity="23.19" />
+  </joint>
+  <link name="LINK_KNEE_PITCH_R">
+    <inertial>
+      <origin xyz="-0.01974485 -0.00139162 -0.21190749" rpy="0 0 0" />
+      <mass value="5.99503443" />
+      <inertia ixx="0.08550064" ixy="0.00012712" ixz="-0.0039275" iyy="0.08578017" iyz="0.0007153" izz="0.01178722" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_KNEE_PITCH_R.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.0 0.0 -0.0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.08" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.02 0.0 -0.25" rpy="0 0.08 0" />
+      <geometry>
+        <box size="0.11 0.09 0.23" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J09_KNEE_PITCH_R" type="revolute">
+    <origin xyz="-0.037707 0.0 -0.28792" rpy="0 0 0" />
+    <parent link="LINK_HIP_YAW_R" />
+    <child link="LINK_KNEE_PITCH_R" />
+    <axis xyz="0.0 1.0 0.0" />
+    <limit lower="0.0" upper="2.355" effort="415" velocity="25.96" />
+  </joint>
+  <link name="LINK_ANKLE_PITCH_R">
+    <inertial>
+      <origin xyz="-3.678e-05 0.0 -0.00887033" rpy="0 0 0" />
+      <mass value="0.14422136" />
+      <inertia ixx="6.785e-05" ixy="0.0" ixz="8.9e-07" iyy="8.493e-05" iyz="0.0" izz="3.827e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_ANKLE_PITCH_R.dae" />
+      </geometry>
+    </visual>
+  </link>
+  <joint name="J10_ANKLE_PITCH_R" type="revolute">
+    <origin xyz="-0.0027168 0.0 -0.43867" rpy="0 0 0" />
+    <parent link="LINK_KNEE_PITCH_R" />
+    <child link="LINK_ANKLE_PITCH_R" />
+    <axis xyz="0.0 1.0 0.0" />
+    <limit lower="-0.68068" upper="0.68068" effort="160" velocity="33.51" />
+  </joint>
+  <link name="LINK_ANKLE_ROLL_R">
+    <inertial>
+      <origin xyz="-0.00128738 0.00120638 -0.0229558" rpy="0 0 0" />
+      <mass value="1.49439088" />
+      <inertia ixx="0.00225678" ixy="-0.00013425" ixz="0.00102424" iyy="0.00706643" iyz="3.805e-05" izz="0.00669016" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_ANKLE_ROLL_R.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_ANKLE_ROLL_R.dae" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J11_ANKLE_ROLL_R" type="revolute">
+    <origin xyz="0.0011073 0.0 -0.037928" rpy="0 0 0" />
+    <parent link="LINK_ANKLE_PITCH_R" />
+    <child link="LINK_ANKLE_ROLL_R" />
+    <axis xyz="1.0 0.0 0.0" />
+    <limit lower="-0.1745" upper="0.3491" effort="160" velocity="33.51" />
+  </joint>
+  <link name="LINK_FOOT_R">
+    <inertial>
+      <mass value="1e-3" />
+      <inertia ixx="1e-12" ixy="0" ixz="0" iyy="1e-12" iyz="0" izz="1e-12" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.02" />
+      </geometry>
+      <material name="">
+        <color rgba="0.75294 0.75294 0.75294 1.0" />
+      </material>
+    </visual>
+  </link>
+  <joint name="J_FIXED_FOOT_R" type="fixed">
+    <origin xyz="0.0 -0.0 -0.06453" rpy="0 0 0" />
+    <parent link="LINK_ANKLE_ROLL_R" />
+    <child link="LINK_FOOT_R" />
+  </joint>
+
+  <link name="LINK_WAIST_YAW">
+    <inertial>
+      <origin xyz="-0.00880845 -0.0006861 0.22276213" rpy="0 0 0" />
+      <mass value="19.41076971" />
+      <inertia ixx="0.25539524" ixy="-0.00026892" ixz="0.01173447" iyy="0.20751344" iyz="-7.852e-05" izz="0.15438582" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_TORSO_YAW.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.007 -0.001 0.075" rpy="0 0 0" />
+      <geometry>
+        <box size="0.18 0.20 0.14" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.007 -0.001 0.25" rpy="0 0 0" />
+      <geometry>
+        <box size="0.22 0.28 0.19" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J12_TORSO_YAW" type="revolute">
+    <origin xyz="0.0 0.0 0.10384" rpy="0 0 0" />
+    <parent link="LINK_BASE" />
+    <child link="LINK_WAIST_YAW" />
+    <axis xyz="0.0 0.0 1.0" />
+    <limit lower="-4.381" upper="1.2392" effort="222" velocity="23.19" />
+  </joint>
+  <link name="LINK_SHOULDER_PITCH_L">
+    <inertial>
+      <origin xyz="-0.00615457 0.05284179 -0.01248709" rpy="0 0 0" />
+      <mass value="1.7688272" />
+      <inertia ixx="0.00239989" ixy="9.745e-05" ixz="-3.159e-05" iyy="0.00144918" iyz="0.00030251" izz="0.0020074" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_SHOULDER_PITCH_L.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.0 0.065 -0.012" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.06" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J13_SHOULDER_PITCH_L" type="revolute">
+    <origin xyz="-0.011 0.16303 0.27889" rpy="0 0 0" />
+    <parent link="LINK_WAIST_YAW" />
+    <child link="LINK_SHOULDER_PITCH_L" />
+    <axis xyz="0.0 0.99678 0.080199" />
+    <limit lower="-2.967" upper="2.793" effort="160" velocity="33.51" />
+  </joint>
+  <link name="LINK_SHOULDER_ROLL_L">
+    <inertial>
+      <origin xyz="-0.00557192 0.00446659 -0.02712926" rpy="0 0 0" />
+      <mass value="0.68289286" />
+      <inertia ixx="0.00156879" ixy="-1.213e-05" ixz="6.803e-05" iyy="0.0021529" iyz="0.00010408" izz="0.00145914" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_SHOULDER_ROLL_L.dae" />
+      </geometry>
+    </visual>
+  </link>
+  <joint name="J14_SHOULDER_ROLL_L" type="revolute">
+    <origin xyz="0.0 0.062533 -0.015455" rpy="0 0 0" />
+    <parent link="LINK_SHOULDER_PITCH_L" />
+    <child link="LINK_SHOULDER_ROLL_L" />
+    <axis xyz="1.0 0.0 0.0" />
+    <limit lower="-0.384" upper="2.443" effort="160" velocity="33.51" />
+  </joint>
+  <link name="LINK_SHOULDER_YAW_L">
+    <inertial>
+      <origin xyz="0.00062214 0.00554981 -0.0898056" rpy="0 0 0" />
+      <mass value="2.55202214" />
+      <inertia ixx="0.00983287" ixy="-6.39e-06" ixz="0.00010691" iyy="0.00995025" iyz="0.0005084" izz="0.00117493" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_SHOULDER_YAW_L.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.001 0.005 -0.04" rpy="0 0 0" />
+      <geometry>
+        <box size="0.08 0.08 0.10" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J15_SHOULDER_YAW_L" type="revolute">
+    <origin xyz="3.4602e-05 0.0085246 -0.082712" rpy="0 0 0" />
+    <parent link="LINK_SHOULDER_ROLL_L" />
+    <child link="LINK_SHOULDER_YAW_L" />
+    <axis xyz="0.0 -0.071497 0.99744" />
+    <limit lower="-2.618" upper="2.618" effort="160" velocity="33.51" />
+  </joint>
+  <link name="LINK_ELBOW_PITCH_L">
+    <inertial>
+      <origin xyz="-0.00883497 0.00295203 -0.07333339" rpy="0 0 0" />
+      <mass value="1.19527475" />
+      <inertia ixx="0.00319176" ixy="2.607e-05" ixz="-6.835e-05" iyy="0.00305525" iyz="0.00030884" izz="0.00132406" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_ELBOW_PITCH_L.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.0 -0.0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.05" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J16_ELBOW_PITCH_L" type="revolute">
+    <origin xyz="0.0019252 0.013597 -0.15075" rpy="0 0 0" />
+    <parent link="LINK_SHOULDER_YAW_L" />
+    <child link="LINK_ELBOW_PITCH_L" />
+    <axis xyz="0.0 0.99744 0.071497" />
+    <limit lower="-2.286" upper="0.262" effort="160" velocity="33.51" />
+  </joint>
+  <link name="LINK_ELBOW_YAW_L">
+    <inertial>
+      <origin xyz="0.01300939 0.00447975 -0.05843837" rpy="0 0 0" />
+      <mass value="1.07882031" />
+      <inertia ixx="0.00196389" ixy="-2.258e-05" ixz="0.000241" iyy="0.00214049" iyz="0.00010919" izz="0.00091653" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_ELBOW_YAW_L.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.014 0.005 -0.05" rpy="0 -0.2 0" />
+      <geometry>
+        <box size="0.08 0.08 0.14" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J17_ELBOW_YAW_L" type="revolute">
+    <origin xyz="-0.0022091 0.0094362 -0.13182" rpy="0 0 0" />
+    <parent link="LINK_ELBOW_PITCH_L" />
+    <child link="LINK_ELBOW_YAW_L" />
+    <axis xyz="-0.21644 -0.069803 0.9738" />
+    <limit lower="-2.618" upper="2.618" effort="52" velocity="35.2" />
+  </joint>
+
+
+  <link name="LINK_WRIST_END_L">
+    <inertial>
+      <mass value="1e-3"/>
+      <inertia ixx="1e-12" ixy="0" ixz="0" iyy="1e-12" iyz="0" izz="1e-12"/>
+    </inertial>
+    <collision>
+      <origin xyz="0.026 -0.009 -0.06" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.05" />
+      </geometry>
+    </collision> 
+  </link>
+  <joint name="J_FIXED_WAIST_L" type="fixed">
+    <origin xyz="0.029436 0.0124855 -0.13222151" rpy="0 0 0"/>
+    <parent link="LINK_ELBOW_YAW_L"/>
+    <child link="LINK_WRIST_END_L"/>
+  </joint>
+
+  <link name="LINK_SHOULDER_PITCH_R">
+    <inertial>
+      <origin xyz="-0.00615457 -0.05284179 -0.01248709" rpy="0 0 0" />
+      <mass value="1.7688272" />
+      <inertia ixx="0.00239989" ixy="-9.745e-05" ixz="-3.159e-05" iyy="0.00144918" iyz="-0.00030251" izz="0.0020074" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_SHOULDER_PITCH_R.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.0 -0.065 -0.012" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.06" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J18_SHOULDER_PITCH_R" type="revolute">
+    <origin xyz="-0.011 -0.16303 0.27889" rpy="0 0 0" />
+    <parent link="LINK_WAIST_YAW" />
+    <child link="LINK_SHOULDER_PITCH_R" />
+    <axis xyz="0.0 0.99678 -0.080199" />
+    <limit lower="-2.967" upper="2.793" effort="160" velocity="33.51" />
+  </joint>
+  <link name="LINK_SHOULDER_ROLL_R">
+    <inertial>
+      <origin xyz="-0.00557192 -0.00446659 -0.02712926" rpy="0 0 0" />
+      <mass value="0.68289286" />
+      <inertia ixx="0.00156879" ixy="1.213e-05" ixz="6.803e-05" iyy="0.0021529" iyz="-0.00010408" izz="0.00145914" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_SHOULDER_ROLL_R.dae" />
+      </geometry>
+    </visual>
+  </link>
+  <joint name="J19_SHOULDER_ROLL_R" type="revolute">
+    <origin xyz="0.0 -0.062533 -0.015455" rpy="0 0 0" />
+    <parent link="LINK_SHOULDER_PITCH_R" />
+    <child link="LINK_SHOULDER_ROLL_R" />
+    <axis xyz="1.0 0.0 0.0" />
+    <limit lower="-2.443" upper="0.384" effort="160" velocity="33.51" />
+  </joint>
+  <link name="LINK_SHOULDER_YAW_R">
+    <inertial>
+      <origin xyz="0.00062214 -0.00554981 -0.0898056" rpy="0 0 0" />
+      <mass value="2.55202214" />
+      <inertia ixx="0.00983287" ixy="6.39e-06" ixz="0.00010691" iyy="0.00995025" iyz="-0.0005084" izz="0.00117493" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_SHOULDER_YAW_R.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.001 -0.005 -0.04" rpy="0 0 0" />
+      <geometry>
+        <box size="0.08 0.08 0.10" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J20_SHOULDER_YAW_R" type="revolute">
+    <origin xyz="3.4602e-05 -0.0085246 -0.082712" rpy="0 0 0" />
+    <parent link="LINK_SHOULDER_ROLL_R" />
+    <child link="LINK_SHOULDER_YAW_R" />
+    <axis xyz="0.0 0.071497 0.99744" />
+    <limit lower="-2.618" upper="2.618" effort="160" velocity="33.51" />
+  </joint>
+  <link name="LINK_ELBOW_PITCH_R">
+    <inertial>
+      <origin xyz="-0.00883497 -0.00295203 -0.07333339" rpy="0 0 0" />
+      <mass value="1.19527475" />
+      <inertia ixx="0.00319176" ixy="-2.607e-05" ixz="-6.835e-05" iyy="0.00305525" iyz="-0.00030884" izz="0.00132406" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_ELBOW_PITCH_R.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.0 -0.0 -0.0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.05" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J21_ELBOW_PITCH_R" type="revolute">
+    <origin xyz="0.0019252 -0.013597 -0.15075" rpy="0 0 0" />
+    <parent link="LINK_SHOULDER_YAW_R" />
+    <child link="LINK_ELBOW_PITCH_R" />
+    <axis xyz="0.0 0.99744 -0.071497" />
+    <limit lower="-2.286" upper="0.262" effort="160" velocity="33.51" />
+  </joint>
+  <link name="LINK_ELBOW_YAW_R">
+    <inertial>
+      <origin xyz="0.01300939 -0.00447975 -0.05843837" rpy="0 0 0" />
+      <mass value="1.07882031" />
+      <inertia ixx="0.00196389" ixy="2.258e-05" ixz="0.000241" iyy="0.00214049" iyz="-0.00010919" izz="0.00091653" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_ELBOW_YAW_R.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.014 -0.005 -0.05" rpy="0 -0.2 0" />
+      <geometry>
+        <box size="0.08 0.08 0.14" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J22_ELBOW_YAW_R" type="revolute">
+    <origin xyz="-0.0022091 -0.0094362 -0.13182" rpy="0 0 0" />
+    <parent link="LINK_ELBOW_PITCH_R" />
+    <child link="LINK_ELBOW_YAW_R" />
+    <axis xyz="-0.21644 0.069803 0.9738" />
+    <limit lower="-2.618" upper="2.618" effort="52" velocity="35.2" />
+  </joint>
+
+  <link name="LINK_WRIST_END_R">
+    <inertial>
+      <mass value="1e-3"/>
+      <inertia ixx="1e-12" ixy="0" ixz="0" iyy="1e-12" iyz="0" izz="1e-12"/>
+    </inertial>
+    <collision>
+      <origin xyz="0.026 0.009 -0.06" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.05" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J_FIXED_WAIST_R" type="fixed">
+    <origin xyz="0.029436 -0.0124855 -0.13222151" rpy="0 0 0"/>
+    <parent link="LINK_ELBOW_YAW_R"/>
+    <child link="LINK_WRIST_END_R"/>
+  </joint>
+
+  <link name="LINK_HEAD_PITCH">
+    <inertial>
+      <origin xyz="0.00012689 0.00010014 0.06729533" rpy="0 0 0" />
+      <mass value="0.70796621" />
+      <inertia ixx="0.00066047" ixy="3.6e-07" ixz="-6.5e-07" iyy="0.00056345" iyz="-9.48e-06" izz="0.00045592" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_HEAD_PITCH.dae" />
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="J23_HEAD_PITCH" type="revolute">
+    <origin xyz="-0.0113 0.0 0.38604" rpy="0 0 0" />
+    <parent link="LINK_WAIST_YAW" />
+    <child link="LINK_HEAD_PITCH" />
+    <axis xyz="0.0 1.0 0.0" />
+    <limit lower="-0.523" upper="0.523" effort="52" velocity="35.2" />
+  </joint>
+  <link name="LINK_HEAD_YAW">
+    <inertial>
+      <origin xyz="0.01813255 4.92e-06 0.09289441" rpy="0 0 0" />
+      <mass value="1.72376594" />
+      <inertia ixx="0.00704823" ixy="1.02e-06" ixz="0.00078549" iyy="0.00848513" iyz="-8.7e-07" izz="0.00775266" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://resource/robot/t800/meshes/LINK_HEAD_YAW.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.018 0 0.08" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.08" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J24_HEAD_YAW" type="revolute">
+    <origin xyz="0.0 0.0 0.040199" rpy="0 0 0" />
+    <parent link="LINK_HEAD_PITCH" />
+    <child link="LINK_HEAD_YAW" />
+    <axis xyz="0.0 0.0 1.0" />
+    <limit lower="-1.222" upper="1.222" effort="52" velocity="35.2" />
+  </joint>
+</robot>

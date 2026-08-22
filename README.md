@@ -12,7 +12,7 @@ High-performance LiDAR simulation for MuJoCo with CPU, Taichi, JAX, and Warp bac
 <p align="center">
   <img src="./assets/g1_native.png" width="32%" />
   <img src="./assets/go2_native.png" width="32%" />
-  <img src="./assets/lidar_rviz.png" width="33%" />
+  <img src="./assets/t800_native.png" width="33%" />
 </p>
 
 [中文文档](README_zh.md) | [Installation](docs/en/INSTALLATION.md) | [Usage Guide](docs/en/USAGE.md) | [Development](docs/en/DEVELOPMENT.md) | [Contributing](CONTRIBUTING.md)
@@ -133,6 +133,7 @@ Run benchmarks: `make benchmark`
 - [examples/example_string.py](examples/example_string.py) - Self-contained XML string scene
 - [examples/unitree_go2.py](examples/unitree_go2.py) - Unitree Go2 without ROS; supports `--backend`
 - [examples/unitree_g1.py](examples/unitree_g1.py) - Unitree G1 without ROS; supports `--backend`
+- [examples/t800.py](examples/t800.py) - EngineAI T800 without ROS; supports `--backend`
 
 ## Development
 

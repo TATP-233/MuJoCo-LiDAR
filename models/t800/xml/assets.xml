@@ -1,0 +1,60 @@
+<mujoco model = "assets">
+    <material name="LINK_BASE" texture="LINK_BASE"/>
+    <material name="LINK_HIP_PITCH" texture="LINK_HIP_PITCH"/>
+    <material name="LINK_HIP_ROLL" texture="LINK_HIP_ROLL"/>
+    <material name="LINK_HIP_YAW" texture="LINK_HIP_YAW"/>
+    <material name="LINK_KNEE_PITCH" texture="LINK_KNEE_PITCH"/>
+    <material name="LINK_ANKLE_ROLL" texture="LINK_ANKLE_ROLL"/>
+    <material name="LINK_TORSO_YAW" texture="LINK_TORSO_YAW"/>
+    <material name="LINK_SHOULDER_PITCH" texture="LINK_SHOULDER_PITCH"/>
+    <material name="LINK_SHOULDER_ROLL" texture="LINK_SHOULDER_ROLL"/>
+    <material name="LINK_SHOULDER_YAW" texture="LINK_SHOULDER_YAW"/>
+    <material name="LINK_ELBOW_PITCH_L" texture="LINK_ELBOW_PITCH_L"/>
+    <material name="LINK_ELBOW_PITCH_R" texture="LINK_ELBOW_PITCH_R"/>
+    <material name="LINK_ELBOW_YAW_L" texture="LINK_ELBOW_YAW_L"/>
+    <material name="LINK_ELBOW_YAW_R" texture="LINK_ELBOW_YAW_R"/>
+    <material name="LINK_HEAD_YAW" texture="LINK_HEAD_YAW"/>
+
+    <texture type="2d" name="LINK_BASE" file="../texture/LINK_BASE.png"/>
+    <texture type="2d" name="LINK_HIP_PITCH" file="../texture/LINK_HIP_PITCH_L.png"/>
+    <texture type="2d" name="LINK_HIP_ROLL" file="../texture/LINK_HIP_ROLL_L.png"/>
+    <texture type="2d" name="LINK_HIP_YAW" file="../texture/LINK_HIP_YAW_L.png"/>
+    <texture type="2d" name="LINK_KNEE_PITCH" file="../texture/LINK_KNEE_PITCH_L.png"/>
+    <texture type="2d" name="LINK_ANKLE_ROLL" file="../texture/LINK_ANKLE_ROLL_L.png"/>
+    <texture type="2d" name="LINK_TORSO_YAW" file="../texture/LINK_TORSO_YAW.png"/>
+    <texture type="2d" name="LINK_SHOULDER_PITCH" file="../texture/LINK_SHOULDER_PITCH_L.png"/>
+    <texture type="2d" name="LINK_SHOULDER_ROLL" file="../texture/LINK_SHOULDER_ROLL_L.png"/>
+    <texture type="2d" name="LINK_SHOULDER_YAW" file="../texture/LINK_SHOULDER_YAW_L.png"/>
+    <texture type="2d" name="LINK_ELBOW_PITCH_L" file="../texture/LINK_ELBOW_PITCH_L.png"/>
+    <texture type="2d" name="LINK_ELBOW_PITCH_R" file="../texture/LINK_ELBOW_PITCH_R.png"/>
+    <texture type="2d" name="LINK_ELBOW_YAW_L" file="../texture/LINK_ELBOW_YAW_L.png"/>
+    <texture type="2d" name="LINK_ELBOW_YAW_R" file="../texture/LINK_ELBOW_YAW_R.png"/>
+    <texture type="2d" name="LINK_HEAD_YAW" file="../texture/LINK_HEAD_YAW.png"/>
+
+    <mesh name="LINK_BASE" file="../meshes/LINK_BASE.obj"/>
+    <mesh name="LINK_HIP_PITCH_L" file="../meshes/LINK_HIP_PITCH_L.obj"/>
+    <mesh name="LINK_HIP_ROLL_L" file="../meshes/LINK_HIP_ROLL_L.obj"/>
+    <mesh name="LINK_HIP_YAW_L" file="../meshes/LINK_HIP_YAW_L.obj"/>
+    <mesh name="LINK_KNEE_PITCH_L" file="../meshes/LINK_KNEE_PITCH_L.obj"/>
+    <mesh name="LINK_ANKLE_PITCH_L" file="../meshes/LINK_ANKLE_PITCH_L.obj"/>
+    <mesh name="LINK_ANKLE_ROLL_L" file="../meshes/LINK_ANKLE_ROLL_L.obj"/>
+    <mesh name="LINK_HIP_PITCH_R" file="../meshes/LINK_HIP_PITCH_R.obj"/>
+    <mesh name="LINK_HIP_ROLL_R" file="../meshes/LINK_HIP_ROLL_R.obj"/>
+    <mesh name="LINK_HIP_YAW_R" file="../meshes/LINK_HIP_YAW_R.obj"/>
+    <mesh name="LINK_KNEE_PITCH_R" file="../meshes/LINK_KNEE_PITCH_R.obj"/>
+    <mesh name="LINK_ANKLE_PITCH_R" file="../meshes/LINK_ANKLE_PITCH_R.obj"/>
+    <mesh name="LINK_ANKLE_ROLL_R" file="../meshes/LINK_ANKLE_ROLL_R.obj"/>
+    <mesh name="LINK_WAIST_YAW" file="../meshes/LINK_TORSO_YAW.obj"/>
+    <mesh name="LINK_SHOULDER_PITCH_L" file="../meshes/LINK_SHOULDER_PITCH_L.obj"/>
+    <mesh name="LINK_SHOULDER_ROLL_L" file="../meshes/LINK_SHOULDER_ROLL_L.obj"/>
+    <mesh name="LINK_SHOULDER_YAW_L" file="../meshes/LINK_SHOULDER_YAW_L.obj"/>
+    <mesh name="LINK_ELBOW_PITCH_L" file="../meshes/LINK_ELBOW_PITCH_L.obj"/>
+    <mesh name="LINK_ELBOW_YAW_L" file="../meshes/LINK_ELBOW_YAW_L.obj"/>
+    <mesh name="LINK_SHOULDER_PITCH_R" file="../meshes/LINK_SHOULDER_PITCH_R.obj"/>
+    <mesh name="LINK_SHOULDER_ROLL_R" file="../meshes/LINK_SHOULDER_ROLL_R.obj"/>
+    <mesh name="LINK_SHOULDER_YAW_R" file="../meshes/LINK_SHOULDER_YAW_R.obj"/>
+    <mesh name="LINK_ELBOW_PITCH_R" file="../meshes/LINK_ELBOW_PITCH_R.obj"/>
+    <mesh name="LINK_ELBOW_YAW_R" file="../meshes/LINK_ELBOW_YAW_R.obj"/>
+    <mesh name="LINK_HEAD_PITCH" file="../meshes/LINK_HEAD_PITCH.obj"/>
+    <mesh name="LINK_HEAD_YAW" file="../meshes/LINK_HEAD_YAW.obj"/>
+</mujoco>

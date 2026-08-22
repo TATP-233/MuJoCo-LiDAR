@@ -1,0 +1,33 @@
+<mujoco model="global_model">
+  <include file="t800/xml/serial_t800.xml"/>
+  <include file="scene.xml"/>
+
+  <!-- 15kg box (1m × 1m × 2m) -->
+  <!-- <worldbody>
+    <body name="box_15kg" pos="1.5 0 1.0">
+      <geom name="box_geom" type="box" size="0.5 0.5 1.0" mass="30" rgba="0.8 0.6 0.4 1"/>
+      <freejoint/>
+    </body>
+  </worldbody> -->
+
+  <keyframe>
+    <key name="home"
+      qpos="
+        -2 0 1.03  1 0 0 0
+        -0.06 0.0 0.0 0.12 -0.06 0.0
+        -0.06 0.0 0.0 0.12 -0.06 0.0
+        0.0
+        0.0 0.15 0.0 -0.25 0.0
+        0.0 -0.15 0.0 -0.25 0.0
+        0.0 0.0"
+      ctrl="
+        -0.06 0.0 0.0 0.12 -0.06 0.0
+        -0.06 0.0 0.0 0.12 -0.06 0.0
+        0.0
+        0.0 0.15 0.0 -0.25 0.0
+        0.0 -0.15 0.0 -0.25 0.0
+        0.0 0.0"
+    />
+  </keyframe>
+
+</mujoco>
