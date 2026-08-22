@@ -48,6 +48,7 @@ examples = [
     "onnxruntime<1.20 ; python_version < '3.11'",
     "onnxruntime>=1.20 ; python_version >= '3.11'",
     "etils[epath]>=1.13.0",
+    "MNN",
 ]
 
 [project.urls]

@@ -1,0 +1,170 @@
+<mujoco model="engineai_robotics">
+    <compiler angle="radian" discardvisual="false" autolimits="true" eulerseq="zyx"/>
+    <option timestep="0.002" integrator="implicitfast" tolerance="1e-10"/>
+
+    <default>
+        <default class="biped">
+            <default class="collision">
+                <geom group="3" contype="1" conaffinity="1" friction="1.0 0.005 0.0001" rgba="0.804 0.361 0.031 0.5"/>
+
+                <default class="collision_head">
+                    <geom type="sphere" size="0.09" pos="0.018 0 0.08" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_torso_upper_box">
+                    <geom type="box" size="0.11 0.14 0.095" pos="-0.007 -0.001 0.25" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_torso_lower_box">
+                    <geom type="box" size="0.09 0.10 0.07" pos="-0.007 -0.001 0.075" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_base">
+                    <geom type="sphere" size="0.09" pos="-0.01 0 0.01" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_left_fore_foot">
+                    <geom type="box" size="0.057 0.055 0.01" pos="0.1 0.00166 -0.054" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_left_hind_foot">
+                    <geom type="box" size="0.03 0.05 0.01" pos="-0.053 0.00166 -0.054" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_left_foot_toe">
+                    <geom type="box" size="0.013 0.06 0.01" quat="0.998 0 -0.061 0" pos="0.172 0.00166 -0.021" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_left_foot_heel">
+                    <geom type="box" size="0.018 0.05 0.01" quat="0.956 0 0.292 0" pos="-0.092 0.00166 -0.045" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+
+                <default class="collision_right_fore_foot">
+                    <geom type="box" size="0.057 0.055 0.01" pos="0.1 -0.00166 -0.054" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_right_hind_foot">
+                    <geom type="box" size="0.03 0.05 0.01" pos="-0.053 0.00166 -0.054" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_right_foot_toe">
+                    <geom type="box" size="0.013 0.06 0.01" quat="0.998 0 -0.061 0" pos="0.172 -0.00166 -0.021" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_right_foot_heel">
+                    <geom type="box" size="0.018 0.05 0.01" quat="0.956 0 0.292 0" pos="-0.092 0.00166 -0.045" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_left_wrist_end">
+                    <geom type="sphere" size="0.05" pos="0.026 -0.009 -0.06" rgba="0.804 0.361 0.031 0.5" />
+                </default>
+
+
+                <default class="collision_shoulder_yaw_left">
+                    <geom type="cylinder" size="0.042 0.06" pos="0.0 0.0 -0.04" quat="1 0 0 0" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_elbow_pitch_left">
+                    <geom type="sphere" size="0.05" pos="0.0 0.0 -0.0" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_elbow_yaw_left">
+                    <geom type="box" size="0.035 0.035 0.08" quat="0.988 0.011 -0.087 0.130" pos="0.014 0.005 -0.05" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_shoulder_yaw_right">
+                    <geom type="cylinder" size="0.042 0.06" pos="0.0 0.0 -0.04" quat="1 0 0 0" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_elbow_pitch_right">
+                    <geom type="sphere" size="0.05" pos="0.0 -0.0 -0.0" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_elbow_yaw_right">
+                    <geom type="box" size="0.035 0.035 0.08" quat="0.988 -0.011 -0.087 -0.130" pos="0.014 -0.005 -0.05" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_right_wrist_end">
+                    <geom type="sphere" size="0.05" pos="0.026 0.009 -0.06" rgba="0.804 0.361 0.031 0.5" />
+                </default>
+
+
+                <default class="collision_hip_left">
+                    <geom type="cylinder" size="0.062 0.08" pos="0.0 0.04 -0.10" quat="1 0 1 0" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_hip_yaw_left">
+                    <geom type="box" size="0.06 0.06 0.11" pos="0.0 0.002 -0.10" quat="1 0 0 0" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_hip_right">
+                    <geom type="cylinder" size="0.062 0.08" pos="0.0 -0.04 -0.10" quat="1 0 1 0" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_hip_yaw_right">
+                    <geom type="box" size="0.06 0.06 0.11" pos="0.0 -0.002 -0.10" quat="1 0 0 0" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_knee_left_1">
+                    <geom type="sphere" size="0.08" pos="-0.0 -0.0 -0.0" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_knee_left_2">
+                    <geom type="box" size="0.05 0.05 0.14" pos="-0.02 -0.0 -0.25" quat="1 0 0 0" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_knee_right_1">
+                    <geom type="sphere" size="0.08" pos="-0.0 0.0 -0.0" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_knee_right_2">
+                    <geom type="box" size="0.05 0.05 0.14" pos="-0.02 0.0 -0.25" quat="1 0 0 0" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_shoulder_roll_left">
+                    <geom type="cylinder" size="0.042 0.06" pos="0.0 0.0 -0.0" quat="1 0 1 0" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+
+                <default class="collision_shoulder_roll_right">
+                    <geom type="cylinder" size="0.042 0.06" pos="0.0 0.0 -0.0" quat="1 0 1 0" rgba="0.804 0.361 0.031 0.5"/>
+                </default>
+            </default>
+
+            <default class="visual">
+                <geom contype="0" conaffinity="0" group="2"/>
+            </default>
+
+            <default class="joint">
+                <joint damping="0.6" frictionloss="0.8"/>
+            </default>
+
+        </default>
+    </default>
+
+    <asset>
+        <include file="assets.xml"/>
+    </asset>
+
+    <worldbody>
+      <light name="spotlight" mode="targetbodycom" target="LINK_BASE" pos="0 -1 2"/>
+        <body name="LINK_BASE" pos="0 0 1.03">
+            <inertial pos="0.01487209 -0.00011942 0.1673244" mass="10.083072" fullinertia="0.05060425 0.03390366 0.03284694 -7.548e-05 -0.00053095 -4.685e-05"/>
+            <geom type="mesh" rgba="0.79216 0.81961 0.93333 1" mesh="LINK_BASE" material="LINK_BASE" class="visual"/>
+            <geom class="collision_base"/>
+            <site name="base" pos="0.017949 -6.844E-05 0.21642"/>
+            <site name="imu" pos="0.0219 0 0.1252"/>
+            <freejoint/>
+
+            <include file="serial_links.xml"/>
+        </body>
+    </worldbody>
+
+    <include file="serial_actuators.xml"/>
+    <include file="serial_sensors.xml"/>
+
+    <!-- Comments this keyframe when fixed base used -->
+  <!-- <keyframe>
+      <key name="floating_base_homing" qpos="0 0 0.87 1 0 0 0 0 0 -0.12 0.24 -0.12 0 0 0 -0.12 0.24 -0.12 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"/>
+  </keyframe> -->
+</mujoco>

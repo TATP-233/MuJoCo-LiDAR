@@ -12,7 +12,7 @@
 <p align="center">
   <img src="./assets/g1_native.png" width="32%" />
   <img src="./assets/go2_native.png" width="32%" />
-  <img src="./assets/lidar_rviz.png" width="33%" />
+  <img src="./assets/t800_native.png" width="33%" />
 </p>
 
 [English](README.md) | [安装指南](docs/zh_CN/INSTALLATION.md) | [使用示例](docs/zh_CN/USAGE.md) | [开发指南](docs/zh_CN/DEVELOPMENT.md)
@@ -151,6 +151,7 @@ hit_points = lidar.get_hit_points()
 - [examples/example_string.py](examples/example_string.py) — 自包含 XML 字符串场景
 - [examples/unitree_go2.py](examples/unitree_go2.py) — 无 ROS 的 Unitree Go2 示例，支持 `--backend`
 - [examples/unitree_g1.py](examples/unitree_g1.py) — 无 ROS 的 Unitree G1 示例，支持 `--backend`
+- [examples/t800.py](examples/t800.py) — 无 ROS 的 EngineAI T800 示例，支持 `--backend`
 
 ## 开发
 
